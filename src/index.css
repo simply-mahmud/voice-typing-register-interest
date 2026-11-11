@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* 
+ * 1. BanglaNumerals: specifically scopes Bengali digits (০-৯) to Kalpurush
+ * to guarantee the authentic curved circular loop for '১' instead of flat teardrop fallbacks.
+ */
 @font-face {
   font-family: 'BanglaNumerals';
   src: url('/fonts/Kalpurush.ttf') format('truetype');
@@ -7,21 +11,26 @@
   font-display: swap;
 }
 
+/* 
+ * 2. Kalpurush: scoped strictly to Bengali alphabet, matras, halant and Bengali punctuation (Danda).
+ * CRITICAL: unicode-range prevents Kalpurush's dated serif Latin glyphs from hijacking English words.
+ */
 @font-face {
   font-family: 'Kalpurush';
   src: url('/fonts/Kalpurush.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0964-0965, U+0980-09FF; /* Bangla script & punctuation ONLY */
 }
 
 @theme {
-  --font-sans: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Inter", "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 @layer base {
   :root, html, body {
-    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Inter", "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #0f172a;
     background-color: #f8fafc;
     font-synthesis: none;
@@ -36,20 +45,20 @@
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Inter", "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   input,
   textarea,
   select,
   button {
-    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Inter", "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   /* Make placeholder text clean, smooth and properly proportioned */
   input::placeholder,
   textarea::placeholder {
-    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, sans-serif;
+    font-family: "Inter", "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, sans-serif;
     color: #94a3b8;
     opacity: 0.9;
   }
@@ -73,4 +82,43 @@
   border-color: #0d9488;
   transform: translateY(-2px);
   box-shadow: 0 12px 24px -10px rgba(13, 148, 136, 0.15);
+}
+
+/* Stylish Professional Brand Typography for English Wordmarks */
+.brand-header-wordmark {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em;
+  color: #020617;
+  text-transform: uppercase;
+  display: inline-block;
+  text-rendering: geometricPrecision;
+}
+
+.brand-hero-eyebrow {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #0f766e;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-rendering: geometricPrecision;
+}
+
+.brand-hero-eyebrow::before,
+.brand-hero-eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 1.75rem;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, #0d9488);
+  opacity: 0.85;
+}
+
+.brand-hero-eyebrow::after {
+  background: linear-gradient(90deg, #0d9488, transparent);
 }

@@ -629,7 +629,9 @@ export function RegisterPortal() {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-base sm:text-xl font-black tracking-wider text-slate-950 truncate">TYPOMATIC</span>
+                <span className="brand-header-wordmark text-base sm:text-xl font-black truncate">
+                  TYPOMATIC
+                </span>
                 <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-teal-50 text-teal-800 border border-teal-200/90">
                   {lang === 'bn' ? 'আর্লি অ্যাক্সেস ও সাবস্ক্রিপশন' : 'Early Access & Subscription'}
                 </span>
@@ -672,9 +674,11 @@ export function RegisterPortal() {
 
           {/* Brand & Main Headline */}
           <div className="mb-4 sm:mb-5">
-            <span className="block text-sm sm:text-base font-extrabold tracking-widest text-teal-700 uppercase mb-1 sm:mb-2">
-              {t.brandName}
-            </span>
+            <div className="mb-2 sm:mb-2.5 flex items-center justify-center">
+              <span className="brand-hero-eyebrow text-xs sm:text-sm md:text-base font-black">
+                {t.brandName}
+              </span>
+            </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-[1.25]">
               {t.title}
             </h1>
