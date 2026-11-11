@@ -25,12 +25,18 @@ import {
   Hash,
   Send,
   Calendar,
+  Monitor,
+  Laptop,
+  Wifi,
+  WifiOff,
 } from 'lucide-react';
 import { BANGLADESH_DIVISIONS } from './data/bangladeshGeo';
 
 type Language = 'bn' | 'en';
 type PackageId = 'pkg_6m' | 'pkg_12m';
 type PaymentVerificationType = 'trx_id' | 'phone_digits';
+type WindowsVersion = 'win11' | 'win10' | '';
+type WifiStatus = 'yes' | 'no' | '';
 
 const DEMO_BKASH_NUMBER = '01700-000000';
 
@@ -55,6 +61,8 @@ export function RegisterPortal() {
     packageId: PackageId;
     paymentType: PaymentVerificationType;
     refDetail: string;
+    windowsVersionLabel: string;
+    wifiStatusLabel: string;
   } | null>(null);
   const [copiedId, setCopiedId] = useState(false);
   const [copiedBkash, setCopiedBkash] = useState(false);
@@ -71,10 +79,14 @@ export function RegisterPortal() {
   const [selectedUpazila, setSelectedUpazila] = useState('mirpur');
   const [customUpazila, setCustomUpazila] = useState('');
 
-  // Form Fields - Step 3: Package
+  // Form Fields - Step 3: PC Specifications (Windows & WiFi)
+  const [windowsVersion, setWindowsVersion] = useState<WindowsVersion>('win11');
+  const [hasWifi, setHasWifi] = useState<WifiStatus>('yes');
+
+  // Form Fields - Step 4: Package
   const [selectedPackage, setSelectedPackage] = useState<PackageId>('pkg_12m');
 
-  // Form Fields - Step 4: Payment
+  // Form Fields - Step 5: Payment
   const [paymentVerificationType, setPaymentVerificationType] = useState<PaymentVerificationType>('trx_id');
   const [transactionId, setTransactionId] = useState('');
   const [senderLastDigits, setSenderLastDigits] = useState('');
@@ -227,8 +239,9 @@ export function RegisterPortal() {
     ],
     step1Title: lang === 'bn' ? '১. আপনার মৌলিক তথ্য' : '1. Personal Details',
     step2Title: lang === 'bn' ? '২. আপনার অবস্থান ও জেলা/উপজেলা' : '2. Location & Address',
-    step3Title: lang === 'bn' ? '৩. প্যাকেজ নির্বাচন করুন' : '3. Choose Your Package',
-    step4Title: lang === 'bn' ? '৪. বিকাশ পেমেন্ট ও তথ্য নিশ্চিতকরণ' : '4. bKash Payment & Verification',
+    step3Title: lang === 'bn' ? '৩. কম্পিউটার ও ইন্টারনেট স্পেসিফিকেশন' : '3. PC & Internet Specifications',
+    step4Title: lang === 'bn' ? '৪. প্যাকেজ নির্বাচন করুন' : '4. Choose Your Package',
+    step5Title: lang === 'bn' ? '৫. বিকাশ পেমেন্ট ও তথ্য নিশ্চিতকরণ' : '5. bKash Payment & Verification',
     packages: {
       pkg_6m: {
         id: 'pkg_6m' as PackageId,
@@ -275,6 +288,21 @@ export function RegisterPortal() {
       district: lang === 'bn' ? 'জেলা' : 'District',
       upazila: lang === 'bn' ? 'উপজেলা / থানা' : 'Upazila / Thana',
       customUpazilaPlaceholder: lang === 'bn' ? 'আপনার থানা বা এলাকার নাম লিখুন...' : 'Enter your specific upazila/thana name...',
+      
+      // Step 3: PC & WiFi
+      windowsTitle: lang === 'bn' ? 'আপনার কম্পিউটারে কোন উইন্ডোজ সংস্করণ রয়েছে?' : 'Which Windows version do you use?',
+      windowsDesc: lang === 'bn' ? 'সফটওয়্যারের উপযুক্ত সংস্করণ ও লাইব্রেরি কনফিগার করতে এটি আবশ্যক।' : 'Required to ensure proper 64-bit desktop runtime compatibility.',
+      win11Title: 'Windows 11',
+      win11Desc: lang === 'bn' ? 'উইন্ডোজ ১১ (আধুনিক সংস্করণ)' : 'Windows 11 (Modern 64-bit)',
+      win10Title: 'Windows 10',
+      win10Desc: lang === 'bn' ? 'উইন্ডোজ ১০ (স্ট্যান্ডার্ড সংস্করণ)' : 'Windows 10 (Standard 64-bit)',
+      wifiTitle: lang === 'bn' ? 'আপনার কম্পিউটারে ওয়াইফাই বা ইন্টারনেট সংযোগ আছে কি?' : 'Does your PC have WiFi or Internet access?',
+      wifiDesc: lang === 'bn' ? 'ভয়েস রিকগনিশন মডেল ও লাইসেন্স সেটআপের জন্য এটি জানা প্রয়োজন।' : 'Used for speech model setup & license activation verification.',
+      wifiYesTitle: lang === 'bn' ? 'হ্যাঁ, ওয়াইফাই / ব্রডব্যান্ড আছে' : 'Yes, have WiFi / Broadband',
+      wifiYesDesc: lang === 'bn' ? 'সার্বক্ষণিক বা নিয়মিত ইন্টারনেট সংযোগ রয়েছে' : 'Continuous or regular internet access',
+      wifiNoTitle: lang === 'bn' ? 'না, ওয়াইফাই নেই' : 'No WiFi Available',
+      wifiNoDesc: lang === 'bn' ? 'মোবাইল ডেটা / মাঝে মাঝে বা অফলাইনে কাজ করি' : 'Mobile hotspot or offline workflow',
+
       bkashSendMoneyTitle: lang === 'bn' ? 'বিকাশ Send Money নির্দেশনা (Personal Account)' : 'bKash Send Money Guide (Personal)',
       bkashNumberLabel: lang === 'bn' ? 'বিকাশ নম্বর (Send Money):' : 'bKash Number (Send Money):',
       bkashCopy: lang === 'bn' ? 'নম্বর কপি করুন' : 'Copy Number',
@@ -324,6 +352,7 @@ export function RegisterPortal() {
       status: lang === 'bn' ? 'স্ট্যাটাস: পেমেন্ট ভেরিফিকেশন ও পর্যালোচনায় অপেক্ষমাণ (PENDING)' : 'Status: Under Admin Review & Verification (PENDING)',
       refId: lang === 'bn' ? 'আপনার ট্র্যাকিং রেফারেন্স আইডি:' : 'Your Tracking Reference ID:',
       packageChosen: lang === 'bn' ? 'নির্বাচিত প্যাকেজ:' : 'Selected Package:',
+      pcSpecsLabel: lang === 'bn' ? 'পিসি ও সংযোগ বিবরণ:' : 'PC & Connectivity:',
       paymentDetailsLabel: lang === 'bn' ? 'প্রদত্ত পেমেন্ট বিবরণ:' : 'Payment Verification Info:',
       step1Title: lang === 'bn' ? '১. পেমেন্ট ও তথ্য ভেরিফিকেশন' : '1. bKash Payment & Info Verification',
       step1Desc: lang === 'bn' ? 'আমাদের অ্যাডমিন টিম বিকাশ স্টেটমেন্টের সাথে আপনার তথ্য মিলিয়ে নেবে।' : 'Our admin team cross-checks your bKash transaction or phone digits with statement.',
@@ -358,6 +387,24 @@ export function RegisterPortal() {
     const cleanPhone = phone.trim();
     if (!cleanPhone || cleanPhone.length < 6) {
       setErrorMessage(lang === 'bn' ? 'অনুগ্রহ করে আপনার সচল মোবাইল বা হোয়াটসঅ্যাপ নম্বর দিন।' : 'Please enter a valid phone or WhatsApp number (at least 6 digits).');
+      return;
+    }
+
+    // Windows & WiFi mandatory validation
+    if (!windowsVersion) {
+      setErrorMessage(
+        lang === 'bn'
+          ? 'অনুগ্রহ করে আপনার পিসির উইন্ডোজ সংস্করণ (Windows 10 নাকি Windows 11) নির্বাচন করুন।'
+          : 'Please select whether your PC runs Windows 10 or Windows 11.'
+      );
+      return;
+    }
+    if (!hasWifi) {
+      setErrorMessage(
+        lang === 'bn'
+          ? 'অনুগ্রহ করে আপনার কম্পিউটারে ওয়াইফাই বা ইন্টারনেট সংযোগ আছে কি না তা নির্বাচন করুন।'
+          : 'Please specify whether your computer has a WiFi connection.'
+      );
       return;
     }
 
@@ -418,6 +465,9 @@ export function RegisterPortal() {
           ? '১২ মাসের প্যাকেজ (৪০০০ টাকা)'
           : '৬ মাসের প্যাকেজ (২২৫০ টাকা)';
 
+      const windowsLabel = windowsVersion === 'win11' ? 'Windows 11' : 'Windows 10';
+      const wifiLabel = hasWifi === 'yes' ? 'হ্যাঁ, ওয়াইফাই আছে' : 'না, ওয়াইফাই নেই';
+
       const paymentDetailText =
         paymentVerificationType === 'trx_id'
           ? `পদ্ধতি: TrxID | ট্রানজেকশন আইডি: ${transactionId.trim()}`
@@ -429,6 +479,8 @@ export function RegisterPortal() {
         `প্যাকেজ: ${packageLabel}`,
         `পেমেন্ট মাধ্যম: বিকাশ Send Money (ব্যক্তিগত)`,
         paymentDetailText,
+        `উইন্ডোজ সংস্করণ: ${windowsLabel}`,
+        `ওয়াইফাই সংযোগ: ${wifiLabel}`,
         `ঠিকানা: ${formattedLocation}`,
         company.trim() ? `প্রতিষ্ঠান / পেশা: ${company.trim()}` : null,
         userNote.trim() ? `গ্রাহকের নোট: ${userNote.trim()}` : null,
@@ -468,6 +520,8 @@ export function RegisterPortal() {
         packageId: selectedPackage,
         paymentType: paymentVerificationType,
         refDetail: paymentVerificationType === 'trx_id' ? transactionId.trim() : `${senderLastDigits.trim()} (${paymentAmount.trim()} TK)`,
+        windowsVersionLabel: windowsLabel,
+        wifiStatusLabel: wifiLabel,
       });
     } catch (err: any) {
       console.error('Registration submission error:', err);
@@ -495,6 +549,8 @@ export function RegisterPortal() {
     setSelectedDistrict('dhaka');
     setSelectedUpazila('mirpur');
     setCustomUpazila('');
+    setWindowsVersion('win11');
+    setHasWifi('yes');
     setSelectedPackage('pkg_12m');
     setPaymentVerificationType('trx_id');
     setTransactionId('');
@@ -660,24 +716,33 @@ export function RegisterPortal() {
                 </div>
               </div>
 
-              {/* Package & Payment Summary Pill */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+              {/* Package, PC Specs & Payment Summary Pill */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
                 <div className="rounded-2xl bg-teal-50/70 border border-teal-200/90 p-4">
-                  <div className="text-[11px] font-bold text-teal-800 uppercase tracking-wider mb-1">
+                  <div className="text-[10px] font-bold text-teal-800 uppercase tracking-wider mb-1">
                     {t.success.packageChosen}
                   </div>
-                  <div className="text-sm font-black text-teal-950">
+                  <div className="text-xs sm:text-sm font-black text-teal-950">
                     {successData.packageId === 'pkg_12m'
                       ? (lang === 'bn' ? '১২ মাসের প্যাকেজ (৪০০০ টাকা)' : '12 Months Package (4,000 BDT)')
                       : (lang === 'bn' ? '৬ মাসের প্যাকেজ (২২৫০ টাকা)' : '6 Months Package (2,250 BDT)')}
                   </div>
                 </div>
 
+                <div className="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                    {t.success.pcSpecsLabel}
+                  </div>
+                  <div className="text-xs sm:text-sm font-bold text-slate-900">
+                    {successData.windowsVersionLabel} &bull; {successData.wifiStatusLabel}
+                  </div>
+                </div>
+
                 <div className="rounded-2xl bg-rose-50/70 border border-rose-200/90 p-4">
-                  <div className="text-[11px] font-bold text-rose-800 uppercase tracking-wider mb-1">
+                  <div className="text-[10px] font-bold text-rose-800 uppercase tracking-wider mb-1">
                     {t.success.paymentDetailsLabel}
                   </div>
-                  <div className="text-sm font-mono font-bold text-rose-950">
+                  <div className="text-xs sm:text-sm font-mono font-bold text-rose-950 truncate">
                     {successData.refDetail}
                   </div>
                 </div>
@@ -980,14 +1045,225 @@ export function RegisterPortal() {
                   )}
                 </div>
 
-                {/* ---------------- STEP 3: PACKAGE SELECTION ---------------- */}
+                {/* ---------------- STEP 3: PC & SYSTEM SPECIFICATIONS (WINDOWS & WIFI) ---------------- */}
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
                       3
                     </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                        {t.step3Title}
+                      </h3>
+                      <p className="text-[11px] text-slate-500">
+                        {lang === 'bn' ? 'সফটওয়্যার উপযুক্তভাবে প্রস্তুত করতে নিচের দুটি তথ্য নির্বাচন আবশ্যক (Must)' : 'Both questions below are mandatory for proper configuration'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 sm:space-y-5">
+                    {/* 1. Windows Version Question */}
+                    <div>
+                      <div className="mb-2">
+                        <label className="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                          <Monitor className="w-4 h-4 text-teal-700" />
+                          <span>{t.fields.windowsTitle}</span>
+                          <span className="text-rose-500 font-bold">*</span>
+                        </label>
+                        <p className="text-[10px] sm:text-[11px] text-slate-500">
+                          {t.fields.windowsDesc}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* Windows 11 */}
+                        <button
+                          type="button"
+                          onClick={() => setWindowsVersion('win11')}
+                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                            windowsVersion === 'win11'
+                              ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
+                              : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                                windowsVersion === 'win11'
+                                  ? 'bg-teal-50 text-teal-700 border border-teal-200'
+                                  : 'bg-slate-100 text-slate-500'
+                              }`}
+                            >
+                              <Monitor className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-950">
+                                {t.fields.win11Title}
+                              </p>
+                              <p className="text-[11px] text-slate-500 font-medium">
+                                {t.fields.win11Desc}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
+                              windowsVersion === 'win11'
+                                ? 'border-teal-600 bg-teal-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {windowsVersion === 'win11' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </button>
+
+                        {/* Windows 10 */}
+                        <button
+                          type="button"
+                          onClick={() => setWindowsVersion('win10')}
+                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                            windowsVersion === 'win10'
+                              ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
+                              : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                                windowsVersion === 'win10'
+                                  ? 'bg-teal-50 text-teal-700 border border-teal-200'
+                                  : 'bg-slate-100 text-slate-500'
+                              }`}
+                            >
+                              <Laptop className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-950">
+                                {t.fields.win10Title}
+                              </p>
+                              <p className="text-[11px] text-slate-500 font-medium">
+                                {t.fields.win10Desc}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
+                              windowsVersion === 'win10'
+                                ? 'border-teal-600 bg-teal-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {windowsVersion === 'win10' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 2. WiFi Availability Question */}
+                    <div>
+                      <div className="mb-2">
+                        <label className="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                          <Wifi className="w-4 h-4 text-teal-700" />
+                          <span>{t.fields.wifiTitle}</span>
+                          <span className="text-rose-500 font-bold">*</span>
+                        </label>
+                        <p className="text-[10px] sm:text-[11px] text-slate-500">
+                          {t.fields.wifiDesc}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* Yes WiFi */}
+                        <button
+                          type="button"
+                          onClick={() => setHasWifi('yes')}
+                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                            hasWifi === 'yes'
+                              ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
+                              : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                                hasWifi === 'yes'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : 'bg-slate-100 text-slate-500'
+                              }`}
+                            >
+                              <Wifi className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-950">
+                                {t.fields.wifiYesTitle}
+                              </p>
+                              <p className="text-[11px] text-slate-500 font-medium">
+                                {t.fields.wifiYesDesc}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
+                              hasWifi === 'yes'
+                                ? 'border-teal-600 bg-teal-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {hasWifi === 'yes' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </button>
+
+                        {/* No WiFi */}
+                        <button
+                          type="button"
+                          onClick={() => setHasWifi('no')}
+                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                            hasWifi === 'no'
+                              ? 'border-amber-600 bg-white ring-4 ring-amber-500/10 shadow-sm'
+                              : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                                hasWifi === 'no'
+                                  ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                                  : 'bg-slate-100 text-slate-500'
+                              }`}
+                            >
+                              <WifiOff className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-950">
+                                {t.fields.wifiNoTitle}
+                              </p>
+                              <p className="text-[11px] text-slate-500 font-medium">
+                                {t.fields.wifiNoDesc}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
+                              hasWifi === 'no'
+                                ? 'border-amber-600 bg-amber-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {hasWifi === 'no' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ---------------- STEP 4: PACKAGE SELECTION ---------------- */}
+                <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
+                  <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
+                    <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      4
+                    </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      {t.step3Title}
+                      {t.step4Title}
                     </h3>
                   </div>
 
@@ -1094,14 +1370,14 @@ export function RegisterPortal() {
                   </div>
                 </div>
 
-                {/* ---------------- STEP 4: BKASH PAYMENT & VERIFICATION ---------------- */}
+                {/* ---------------- STEP 5: BKASH PAYMENT & VERIFICATION ---------------- */}
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      4
+                      5
                     </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      {t.step4Title}
+                      {t.step5Title}
                     </h3>
                   </div>
 
