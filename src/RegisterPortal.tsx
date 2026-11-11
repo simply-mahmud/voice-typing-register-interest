@@ -29,13 +29,14 @@ import {
   Laptop,
   Wifi,
   WifiOff,
+  Languages,
 } from 'lucide-react';
 import { BANGLADESH_DIVISIONS } from './data/bangladeshGeo';
 
 type Language = 'bn' | 'en';
 type PackageId = 'pkg_6m' | 'pkg_12m';
 type PaymentVerificationType = 'trx_id' | 'phone_digits';
-type WindowsVersion = 'win11' | 'win10' | '';
+type WindowsVersion = 'win11' | 'win10' | 'win7' | '';
 type WifiStatus = 'yes' | 'no' | '';
 
 const DEMO_BKASH_NUMBER = '01700-000000';
@@ -148,14 +149,25 @@ export function RegisterPortal() {
 
   const t = {
     badge: lang === 'bn' ? 'এইচএম ইনোভেশনস • অফিশিয়াল আর্লি অ্যাক্সেস ও প্রি-রেজিস্ট্রেশন' : 'HM Innovations • Official Early Access & Pre-Registration',
+    brandName: 'Typomatic',
     title:
       lang === 'bn'
-        ? 'বাংলা ভয়েস টাইপিং ও ইসলামিক ডকুমেন্টিংয়ের আধুনিক রূপান্তর'
-        : 'The Intelligent Future of Bangla Voice Typing & Islamic Documents',
+        ? 'শুধু ভয়েস টাইপিং নয়, লেখালেখির সম্পূর্ণ স্মার্ট সমাধান!'
+        : 'Not Just Voice Typing — The Complete Smart Writing Suite!',
     subtitle:
       lang === 'bn'
-        ? 'মাইক্রোসফট ওয়ার্ডে সরাসরি রিয়েল-টাইম বাংলা ভয়েস টাইপিং, ৫০০+ প্রামাণ্য ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট এবং আধুনিক বানান ও বাক্য কারেক্টর — টাইপোম্যাটিক এর সাথে কাজ করুন সম্পূর্ণ নিশ্চিন্তে ও দ্রুততম গতিতে।'
-        : 'Continuous real-time Bangla voice-to-text directly in MS Word, 500+ authentic Arabic & Islamic calligraphy ligatures, and contextual spell and sentence correction — all in one unified desktop suite.',
+        ? 'কিবোর্ডে টাইপ করার ঝামেলা, বানান সংশোধন কিংবা বিভিন্ন ভাষার ফন্ট নিয়ন্ত্রণ নিয়ে আর চিন্তা নয়। বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ভাষায় লেখালেখির প্রয়োজনীয় সব সুবিধা এবার এক সফটওয়্যারেই।'
+        : 'No more worries about keyboard typing hassle, spell checking, or managing fonts of different languages. All essential writing features in Bengali, Arabic, English, Urdu, and Persian now in one single software.',
+    hookTitle:
+      lang === 'bn'
+        ? 'লেখালেখি হোক আরও সহজ, দ্রুত ও নির্ভুল!'
+        : 'Make Your Writing Easier, Faster & Flawless!',
+    hookSubtitle:
+      lang === 'bn'
+        ? 'কম সময়, কম পরিশ্রম এবং এক সফটওয়্যারে বহুভাষিক লেখালেখির স্মার্ট অভিজ্ঞতা।'
+        : 'Less time, less effort, and an intelligent multilingual writing experience — all in one software.',
+    featuresSectionTitle:
+      lang === 'bn' ? 'Typomatic - এর বিশেষ ফিচারসমূহ' : 'Typomatic Key Features',
     formHeader: lang === 'bn' ? 'রেজিস্ট্রেশন ও সাবস্ক্রিপশন ফরম' : 'Registration & Subscription Form',
     formNote:
       lang === 'bn'
@@ -163,28 +175,28 @@ export function RegisterPortal() {
         : 'Important: Once submitted, our authorized administrative team verifies your bKash payment and reaches out via WhatsApp or phone with your official activation key and installation package.',
     metrics: [
       {
-        value: '৯৯.২%',
-        valueEn: '99.2%',
-        labelBn: 'স্পিচ নির্ভুলতা',
-        labelEn: 'Speech Accuracy',
-        descBn: 'উন্নত বাংলা কথ্য ভাষা মডেল',
-        descEn: 'Trained on authentic Bangla speech',
+        value: 'আনলিমিটেড',
+        valueEn: 'Unlimited',
+        labelBn: 'ভয়েস টাইপিং ও কমান্ড',
+        labelEn: 'Voice Typing & Commands',
+        descBn: 'সীমাহীন ভয়েস টেক্সট ও দ্রুত ফরম্যাটিং',
+        descEn: 'Continuous speech & instant formatting',
       },
       {
-        value: '০ ল্যাগ',
-        valueEn: '0 Lag',
-        labelBn: 'এমএস ওয়ার্ড সিঙ্ক',
-        labelEn: 'Direct Word Sync',
-        descBn: 'সরাসরি ডকুমেন্টে রিয়েল-টাইম টাইপিং',
-        descEn: 'Zero typing latency in Microsoft Word',
+        value: '১-ক্লিকে',
+        valueEn: '1-Click',
+        labelBn: 'স্বয়ংক্রিয় বানান সংশোধন',
+        labelEn: 'Auto Correction',
+        descBn: 'টাইপিং ভুল ও অসংগতি নিমিষেই দূর',
+        descEn: 'Fix typographical errors instantly',
       },
       {
-        value: '৫০০+',
-        valueEn: '500+',
-        labelBn: 'আরবি ক্যালিগ্রাফি',
-        labelEn: 'Arabic Ligatures',
-        descBn: 'দরুদ, আয়াত ও ইসলামিক প্রতীক শর্টকাট',
-        descEn: 'One-click Durood & Quranic ligatures',
+        value: '৫টি ভাষা',
+        valueEn: '5 Languages',
+        labelBn: 'স্মার্ট ফন্ট কন্ট্রোল',
+        labelEn: 'Smart Font Control',
+        descBn: 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি',
+        descEn: 'Bengali, Arabic, English, Urdu & Persian',
       },
       {
         value: '১০০%',
@@ -195,46 +207,65 @@ export function RegisterPortal() {
         descEn: 'Fail-closed single-device session',
       },
     ],
-    audiencesLabel: lang === 'bn' ? 'যাদের জন্য বিশেষভাবে ডিজাইন করা:' : 'Specially Crafted For:',
-    audiences: [
-      { bn: 'লেখক ও গবেষক', en: 'Authors & Researchers' },
-      { bn: 'মাদ্রাসা ও ইসলামিক স্কলার', en: 'Islamic Scholars & Madrashahs' },
-      { bn: 'সাংবাদিক ও কলামিস্ট', en: 'Journalists & Columnists' },
-      { bn: 'প্রকাশনা ও প্রুফরিডার', en: 'Publishers & Proofreaders' },
-      { bn: 'অফিস ও ডকুমেন্ট প্রফেশনাল', en: 'Office & Document Pros' },
+    languagesList: [
+      { label: 'বাংলা', sub: 'Bengali' },
+      { label: 'العربية', sub: 'Arabic' },
+      { label: 'English', sub: 'English' },
+      { label: 'اردو', sub: 'Urdu' },
+      { label: 'فارسی', sub: 'Persian' },
     ],
     features: [
       {
         icon: Mic,
-        title: lang === 'bn' ? 'বাংলা ভয়েস টাইপিং' : 'Bangla Voice Typing',
+        badgeBn: 'ভয়েস ও কমান্ড',
+        badgeEn: 'Voice & Commands',
+        title:
+          lang === 'bn'
+            ? '১. Unlimited Voice Typing & Voice Commands'
+            : '1. Unlimited Voice Typing & Voice Commands',
         desc:
           lang === 'bn'
-            ? 'মাইক্রোফোনে স্বাভাবিক বাংলায় কথা বলুন, স্বয়ংক্রিয়ভাবে নির্ভুল টেক্সট টাইপ হবে এমএস ওয়ার্ড সহ যেকোনো উইন্ডোতে।'
-            : 'Speak naturally in Bangla; watch words appear with high accuracy directly inside Microsoft Word and desktop apps.',
+            ? 'কোনো সীমাবদ্ধতা ছাড়াই ভয়েসের মাধ্যমে দ্রুত লিখুন। ভয়েস কমান্ড ব্যবহার করে লেখার প্রয়োজনীয় ফরম্যাটিং ও কমান্ড দিন এক নিমিষেই।'
+            : 'Speak and write rapidly without any restrictions. Use intuitive voice commands to format, structure, and control text instantaneously.',
+      },
+      {
+        icon: CheckCheck,
+        badgeBn: '১-ক্লিকে সংশোধন',
+        badgeEn: '1-Click Fix',
+        title:
+          lang === 'bn'
+            ? '২. One-Click Auto Correction'
+            : '2. One-Click Auto Correction',
+        desc:
+          lang === 'bn'
+            ? 'ভয়েস টাইপিংয়ের সাধারণ বানান ভুল ও অসংগতি দূর করুন মাত্র এক ক্লিকে।'
+            : 'Eliminate voice typing typographical errors, phonetic slips, and syntax discrepancies with just a single click.',
+      },
+      {
+        icon: Languages,
+        badgeBn: 'বহুভাষিক ফন্ট',
+        badgeEn: 'Multilingual Font',
+        title:
+          lang === 'bn'
+            ? '৩. Smart Font Control'
+            : '3. Smart Font Control',
+        desc:
+          lang === 'bn'
+            ? 'একই ফাইলে বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ভাষা ব্যবহার করুন নির্বিঘ্নে - ফন্ট পরিবর্তনের কোনো বাড়তি ঝামেলা ছাড়াই।'
+            : 'Seamlessly write Bengali, Arabic, English, Urdu, and Persian in the same file without the hassle of manual font switching.',
       },
       {
         icon: Feather,
-        title: lang === 'bn' ? 'ইসলামিক ও আরবি ক্যালিগ্রাফি' : 'Islamic Calligraphy',
+        badgeBn: 'ক্যালিগ্রাফি শর্টকাট',
+        badgeEn: 'Calligraphy Shortcuts',
+        title:
+          lang === 'bn'
+            ? '৪. Quick Arabic Shortcuts'
+            : '4. Quick Arabic Shortcuts',
         desc:
           lang === 'bn'
-            ? 'দরুদ শরিফ, আয়াত, সাহাবা ও ইসলামিক প্রতীকের এক-ক্লিকে ইনসার্ট শর্টকাট — বই ও প্রবন্ধ লেখার জন্য অপরিহার্য।'
-            : 'One-key insertion of authentic Arabic symbols, Durood Sharif ligatures, and Quranic phrases without formatting mess.',
-      },
-      {
-        icon: Sparkles,
-        title: lang === 'bn' ? 'স্মার্ট বানান কারেক্টর' : 'Smart Spell Corrector',
-        desc:
-          lang === 'bn'
-            ? 'প্রফেশনাল ডকুমেন্ট সম্পাদনায় বাংলা ব্যাকরণ ও বানান সংশোধন, যা আপনার লেখার মান বহুগুণ বাড়িয়ে তুলবে।'
-            : 'Context-aware Bangla spell and syntax correction inside Word to eliminate typographical errors in seconds.',
-      },
-      {
-        icon: ShieldCheck,
-        title: lang === 'bn' ? 'অফলাইন ও হার্ডওয়্যার সিকিউরড' : 'Offline & Hardware Bound',
-        desc:
-          lang === 'bn'
-            ? 'ইন্টারনেট বিঘ্নিত হলেও প্রয়োজনীয় টাইপিং চালু থাকে। সিঙ্গেল ডিভাইস সিকিউরিটি ও কোনো ডেটা লিকেজ নয়।'
-            : 'Unbreakable cryptographic device binding and reliable offline typing resilience for uninterrupted workflow.',
+            ? 'প্রয়োজনীয় আরবি শব্দ, বহুল ব্যবহৃত বাক্যাংশ ও নান্দনিক ক্যালিগ্রাফিক টেক্সটগুলো ডকুমেন্টে যুক্ত করুন তাৎক্ষণিকভাবে।'
+            : 'Insert essential Arabic words, frequently used religious phrases, and authentic calligraphic ligatures into documents instantly.',
       },
     ],
     step1Title: lang === 'bn' ? '১. আপনার মৌলিক তথ্য' : '1. Personal Details',
@@ -251,8 +282,10 @@ export function RegisterPortal() {
         priceDisplay: lang === 'bn' ? '২২৫০ টাকা' : '2,250 BDT',
         features: [
           lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
-          lang === 'bn' ? 'বাংলা ভয়েস টাইপিং (উচ্চ নির্ভুলতা)' : 'High Accuracy Bangla Voice-to-Text',
-          lang === 'bn' ? '৫০০+ ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট' : '500+ Arabic & Islamic Ligatures',
+          lang === 'bn' ? 'আনলিমিটেড ভয়েস টাইপিং ও ভয়েস কমান্ড' : 'Unlimited Voice Typing & Commands',
+          lang === 'bn' ? 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ফন্ট কন্ট্রোল' : '5-Language Font Control',
+          lang === 'bn' ? 'ওয়ান-ক্লিক অটো কারেকশন সুবিধা' : 'One-Click Auto Correction',
+          lang === 'bn' ? 'কুইক আরবি ও ইসলামিক ক্যালিগ্রাফি শর্টকাট' : 'Quick Arabic Calligraphy Shortcuts',
           lang === 'bn' ? '৬ মাসের ফ্রি আপডেট ও সাপোর্ট' : '6 Months Regular Updates & Support',
           lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
         ],
@@ -267,10 +300,11 @@ export function RegisterPortal() {
         badge: lang === 'bn' ? 'সর্বোচ্চ সাশ্রয়ী • ৫০০ টাকা ছাড়' : 'Best Value • Save 500 BDT',
         features: [
           lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
-          lang === 'bn' ? 'আনলিমিটেড বাংলা ভয়েস টাইপিং (এমএস ওয়ার্ড সিঙ্ক)' : 'Unlimited Word Voice Typing',
-          lang === 'bn' ? '৫০০+ প্রামাণ্য ইসলামিক ক্যালিগ্রাফি শর্টকাট' : '500+ Authentic Islamic Shortcuts',
-          lang === 'bn' ? 'স্মার্ট বাংলা বানান ও ব্যাকরণ কারেক্টর' : 'Smart Bangla Spell & Grammar Corrector',
-          lang === 'bn' ? '১ বছরের প্রায়োরিটি ভিআইপি সাপোর্ট' : '1 Year Priority VIP Updates & Support',
+          lang === 'bn' ? 'আনলিমিটেড ভয়েস টাইপিং ও অ্যাডভান্সড ভয়েস কমান্ড' : 'Unlimited Voice Typing & Commands',
+          lang === 'bn' ? 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ফুল ফন্ট সাপোর্ট' : 'Full 5-Language Font Support',
+          lang === 'bn' ? 'স্মার্ট ওয়ান-ক্লিক অটো কারেকশন' : 'One-Click Auto Correction',
+          lang === 'bn' ? '৫০০+ প্রামাণ্য আরবি ক্যালিগ্রাফি ও দরুদ শর্টকাট' : '500+ Arabic Calligraphy Shortcuts',
+          lang === 'bn' ? '১ বছরের সার্বক্ষণিক প্রায়োরিটি ভিআইপি সাপোর্ট' : '1 Year Priority VIP Updates & Support',
           lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
         ],
       },
@@ -290,14 +324,19 @@ export function RegisterPortal() {
       customUpazilaPlaceholder: lang === 'bn' ? 'আপনার থানা বা এলাকার নাম লিখুন...' : 'Enter your specific upazila/thana name...',
       
       // Step 3: PC & WiFi
-      windowsTitle: lang === 'bn' ? 'আপনার কম্পিউটারে কোন উইন্ডোজ সংস্করণ রয়েছে?' : 'Which Windows version do you use?',
-      windowsDesc: lang === 'bn' ? 'সফটওয়্যারের উপযুক্ত সংস্করণ ও লাইব্রেরি কনফিগার করতে এটি আবশ্যক।' : 'Required to ensure proper 64-bit desktop runtime compatibility.',
+      windowsTitle: lang === 'bn' ? 'আপনার কম্পিউটারের অপারেটিং সিস্টেম (উইন্ডোজ)' : 'Your PC Operating System (Windows)',
+      windowsDesc: lang === 'bn' ? 'সফটওয়্যারের উপযুক্ত সংস্করণ ও লাইব্রেরি কনফিগার করতে এটি আবশ্যক।' : 'Required to ensure proper desktop runtime compatibility.',
       win11Title: 'Windows 11',
-      win11Desc: lang === 'bn' ? 'উইন্ডোজ ১১ (আধুনিক সংস্করণ)' : 'Windows 11 (Modern 64-bit)',
+      win11Badge: lang === 'bn' ? 'সুপারিশকৃত' : 'Recommended',
+      win11Desc: lang === 'bn' ? 'আধুনিক ৬৪-বিট সংস্করণ' : 'Modern 64-bit Edition',
       win10Title: 'Windows 10',
-      win10Desc: lang === 'bn' ? 'উইন্ডোজ ১০ (স্ট্যান্ডার্ড সংস্করণ)' : 'Windows 10 (Standard 64-bit)',
+      win10Badge: lang === 'bn' ? 'সুপারিশকৃত' : 'Recommended',
+      win10Desc: lang === 'bn' ? 'স্ট্যান্ডার্ড ৬৪-বিট সংস্করণ' : 'Standard 64-bit Edition',
+      win7Title: 'Windows 7',
+      win7Desc: lang === 'bn' ? 'উইন্ডোজ ৭ (বেসিক সাপোর্ট)' : 'Legacy Basic Support',
+
       wifiTitle: lang === 'bn' ? 'আপনার কম্পিউটারে ওয়াইফাই বা ইন্টারনেট সংযোগ আছে কি?' : 'Does your PC have WiFi or Internet access?',
-      wifiDesc: lang === 'bn' ? 'ভয়েস রিকগনিশন মডেল ও লাইসেন্স সেটআপের জন্য এটি জানা প্রয়োজন।' : 'Used for speech model setup & license activation verification.',
+      wifiDesc: lang === 'bn' ? 'ভয়েস মডেল ডাউনলোড ও লাইসেন্স সেটআপের জন্য এটি জানা প্রয়োজন।' : 'Used for speech model setup & license activation verification.',
       wifiYesTitle: lang === 'bn' ? 'হ্যাঁ, ওয়াইফাই / ব্রডব্যান্ড আছে' : 'Yes, have WiFi / Broadband',
       wifiYesDesc: lang === 'bn' ? 'সার্বক্ষণিক বা নিয়মিত ইন্টারনেট সংযোগ রয়েছে' : 'Continuous or regular internet access',
       wifiNoTitle: lang === 'bn' ? 'না, ওয়াইফাই নেই' : 'No WiFi Available',
@@ -394,8 +433,8 @@ export function RegisterPortal() {
     if (!windowsVersion) {
       setErrorMessage(
         lang === 'bn'
-          ? 'অনুগ্রহ করে আপনার পিসির উইন্ডোজ সংস্করণ (Windows 10 নাকি Windows 11) নির্বাচন করুন।'
-          : 'Please select whether your PC runs Windows 10 or Windows 11.'
+          ? 'অনুগ্রহ করে আপনার পিসির অপারেটিং সিস্টেম (Windows 11, Windows 10 বা Windows 7) নির্বাচন করুন।'
+          : 'Please select whether your PC runs Windows 11, Windows 10, or Windows 7.'
       );
       return;
     }
@@ -465,7 +504,13 @@ export function RegisterPortal() {
           ? '১২ মাসের প্যাকেজ (৪০০০ টাকা)'
           : '৬ মাসের প্যাকেজ (২২৫০ টাকা)';
 
-      const windowsLabel = windowsVersion === 'win11' ? 'Windows 11' : 'Windows 10';
+      const windowsLabel =
+        windowsVersion === 'win11'
+          ? 'Windows 11 (Recommended)'
+          : windowsVersion === 'win10'
+          ? 'Windows 10 (Recommended)'
+          : 'Windows 7';
+
       const wifiLabel = hasWifi === 'yes' ? 'হ্যাঁ, ওয়াইফাই আছে' : 'না, ওয়াইফাই নেই';
 
       const paymentDetailText =
@@ -479,7 +524,7 @@ export function RegisterPortal() {
         `প্যাকেজ: ${packageLabel}`,
         `পেমেন্ট মাধ্যম: বিকাশ Send Money (ব্যক্তিগত)`,
         paymentDetailText,
-        `উইন্ডোজ সংস্করণ: ${windowsLabel}`,
+        `অপারেটিং সিস্টেম: ${windowsLabel}`,
         `ওয়াইফাই সংযোগ: ${wifiLabel}`,
         `ঠিকানা: ${formattedLocation}`,
         company.trim() ? `প্রতিষ্ঠান / পেশা: ${company.trim()}` : null,
@@ -592,7 +637,7 @@ export function RegisterPortal() {
               <p className="text-[10px] sm:text-xs text-slate-500 font-semibold truncate flex items-center gap-1.5">
                 <span className="text-teal-700 font-bold">HM Innovations</span>
                 <span className="text-slate-300">&bull;</span>
-                <span className="truncate">{lang === 'bn' ? 'বাংলা ও আরবি প্রোডাক্টিভিটি স্যুট' : 'Bangla & Arabic Productivity Suite'}</span>
+                <span className="truncate">{lang === 'bn' ? 'লেখালেখির সম্পূর্ণ স্মার্ট সমাধান' : 'Complete Smart Writing Suite'}</span>
               </p>
             </div>
           </div>
@@ -615,7 +660,7 @@ export function RegisterPortal() {
       {/* Main Content Area */}
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-14 flex-1 w-full flex flex-col justify-center">
         {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 px-2">
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14 px-2">
           {/* Badge with subtle ping indicator */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200/90 text-teal-800 text-xs font-bold mb-4 sm:mb-5 shadow-xs">
             <span className="relative flex h-2 w-2">
@@ -625,25 +670,33 @@ export function RegisterPortal() {
             <span>{t.badge}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-[1.2] mb-4 sm:mb-5">
-            {t.title}
-          </h1>
+          {/* Brand & Main Headline */}
+          <div className="mb-4 sm:mb-5">
+            <span className="block text-sm sm:text-base font-extrabold tracking-widest text-teal-700 uppercase mb-1 sm:mb-2">
+              {t.brandName}
+            </span>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-[1.25]">
+              {t.title}
+            </h1>
+          </div>
 
-          <p className="text-xs sm:text-base text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto mb-6 sm:mb-8">
+          {/* Subtitle / Value Proposition */}
+          <p className="text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal max-w-3xl mx-auto mb-6 sm:mb-7">
             {t.subtitle}
           </p>
 
-          {/* Target Audience Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-1">
-            <span className="text-[11px] sm:text-xs font-bold text-slate-400 mr-1 sm:mr-2">
-              {t.audiencesLabel}
+          {/* 5 Multilingual Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 pt-1">
+            <span className="text-xs font-bold text-slate-400 mr-1 sm:mr-2">
+              {lang === 'bn' ? 'সমর্থিত ৫টি ভাষা:' : 'Supported Languages:'}
             </span>
-            {t.audiences.map((aud, i) => (
+            {t.languagesList.map((langItem, idx) => (
               <span
-                key={i}
-                className="px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg bg-white border border-slate-200/80 text-slate-700 shadow-2xs"
+                key={idx}
+                className="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-slate-200 shadow-2xs text-slate-800 flex items-center gap-1.5"
               >
-                {lang === 'bn' ? aud.bn : aud.en}
+                <span className="text-teal-700 font-black">{langItem.label}</span>
+                <span className="text-[10px] text-slate-400 font-medium">({langItem.sub})</span>
               </span>
             ))}
           </div>
@@ -669,29 +722,65 @@ export function RegisterPortal() {
           ))}
         </div>
 
-        {/* Feature Highlights Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 max-w-5xl mx-auto mb-10 sm:mb-14 w-full">
-          {t.features.map((feat, idx) => {
-            const Icon = feat.icon;
-            return (
-              <div
-                key={idx}
-                className="portal-feature-card rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 mb-3 shadow-2xs">
-                    <Icon className="w-5 h-5" />
+        {/* Typomatic Key Features Grid */}
+        <div className="max-w-5xl mx-auto mb-10 sm:mb-14 w-full">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-950">
+              {t.featuresSectionTitle}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            {t.features.map((feat, idx) => {
+              const Icon = feat.icon;
+              return (
+                <div
+                  key={idx}
+                  className="portal-feature-card rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 shadow-2xs">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">
+                        {lang === 'bn' ? feat.badgeBn : feat.badgeEn}
+                      </span>
+                    </div>
+                    <h3 className="text-sm sm:text-base font-black text-slate-900 mb-2 leading-snug">
+                      {feat.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      {feat.desc}
+                    </p>
                   </div>
-                  <h2 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">{feat.title}</h2>
-                  <p className="text-xs text-slate-500 leading-relaxed">{feat.desc}</p>
+                  <div className="pt-3.5 mt-3.5 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-teal-700">
+                    <CheckCheck className="w-3.5 h-3.5" />
+                    <span>{lang === 'bn' ? 'সরাসরি ইন্টিগ্রেটেড সুবিধা' : 'Native Built-in Power'}</span>
+                  </div>
                 </div>
-                <div className="pt-3 mt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-teal-700">
-                  <CheckCheck className="w-3.5 h-3.5" />
-                  <span>{lang === 'bn' ? 'সরাসরি ইন্টিগ্রেটেড' : 'Built-in Native'}</span>
-                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Inspiring Hook Callout Banner */}
+        <div className="max-w-4xl mx-auto w-full mb-10 sm:mb-14">
+          <div className="rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-emerald-950 text-white p-6 sm:p-8 text-center relative overflow-hidden shadow-xl border border-teal-800/40">
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-300 text-xs font-bold mb-3 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                <span>{lang === 'bn' ? 'স্মার্ট সমাধান' : 'Smart Writing Experience'}</span>
               </div>
-            );
-          })}
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight mb-2 text-white">
+                {t.hookTitle}
+              </h3>
+              <p className="text-xs sm:text-sm md:text-base text-slate-300 font-normal leading-relaxed">
+                {t.hookSubtitle}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Application Form or Success Container */}
@@ -1045,7 +1134,7 @@ export function RegisterPortal() {
                   )}
                 </div>
 
-                {/* ---------------- STEP 3: PC & SYSTEM SPECIFICATIONS (WINDOWS & WIFI) ---------------- */}
+                {/* ---------------- STEP 3: PC & SYSTEM SPECIFICATIONS (WINDOWS 11, 10, 7 & WIFI) ---------------- */}
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
@@ -1062,7 +1151,7 @@ export function RegisterPortal() {
                   </div>
 
                   <div className="space-y-4 sm:space-y-5">
-                    {/* 1. Windows Version Question */}
+                    {/* 1. Windows Version Question (Win 11, Win 10, Win 7) */}
                     <div>
                       <div className="mb-2">
                         <label className="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
@@ -1075,84 +1164,106 @@ export function RegisterPortal() {
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {/* Windows 11 */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {/* Windows 11 (Recommended) */}
                         <button
                           type="button"
                           onClick={() => setWindowsVersion('win11')}
-                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                          className={`relative flex flex-col justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
                             windowsVersion === 'win11'
                               ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
                               : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-start justify-between gap-2 mb-2">
                             <div
-                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                                 windowsVersion === 'win11'
                                   ? 'bg-teal-50 text-teal-700 border border-teal-200'
                                   : 'bg-slate-100 text-slate-500'
                               }`}
                             >
-                              <Monitor className="w-5 h-5" />
+                              <Monitor className="w-4 h-4" />
                             </div>
-                            <div>
-                              <p className="text-sm font-bold text-slate-950">
-                                {t.fields.win11Title}
-                              </p>
-                              <p className="text-[11px] text-slate-500 font-medium">
-                                {t.fields.win11Desc}
-                              </p>
-                            </div>
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black">
+                              {t.fields.win11Badge}
+                            </span>
                           </div>
-                          <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
-                              windowsVersion === 'win11'
-                                ? 'border-teal-600 bg-teal-600 text-white'
-                                : 'border-slate-300 bg-white'
-                            }`}
-                          >
-                            {windowsVersion === 'win11' && <Check className="w-3 h-3 stroke-[3]" />}
+                          <div>
+                            <p className="text-sm font-black text-slate-950">
+                              {t.fields.win11Title}
+                            </p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              {t.fields.win11Desc}
+                            </p>
                           </div>
                         </button>
 
-                        {/* Windows 10 */}
+                        {/* Windows 10 (Recommended) */}
                         <button
                           type="button"
                           onClick={() => setWindowsVersion('win10')}
-                          className={`flex items-center justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                          className={`relative flex flex-col justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
                             windowsVersion === 'win10'
                               ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
                               : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-start justify-between gap-2 mb-2">
                             <div
-                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                                 windowsVersion === 'win10'
                                   ? 'bg-teal-50 text-teal-700 border border-teal-200'
                                   : 'bg-slate-100 text-slate-500'
                               }`}
                             >
-                              <Laptop className="w-5 h-5" />
+                              <Laptop className="w-4 h-4" />
                             </div>
-                            <div>
-                              <p className="text-sm font-bold text-slate-950">
-                                {t.fields.win10Title}
-                              </p>
-                              <p className="text-[11px] text-slate-500 font-medium">
-                                {t.fields.win10Desc}
-                              </p>
-                            </div>
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black">
+                              {t.fields.win10Badge}
+                            </span>
                           </div>
-                          <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
-                              windowsVersion === 'win10'
-                                ? 'border-teal-600 bg-teal-600 text-white'
-                                : 'border-slate-300 bg-white'
-                            }`}
-                          >
-                            {windowsVersion === 'win10' && <Check className="w-3 h-3 stroke-[3]" />}
+                          <div>
+                            <p className="text-sm font-black text-slate-950">
+                              {t.fields.win10Title}
+                            </p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              {t.fields.win10Desc}
+                            </p>
+                          </div>
+                        </button>
+
+                        {/* Windows 7 */}
+                        <button
+                          type="button"
+                          onClick={() => setWindowsVersion('win7')}
+                          className={`relative flex flex-col justify-between p-3.5 rounded-2xl border-2 text-left transition cursor-pointer ${
+                            windowsVersion === 'win7'
+                              ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-sm'
+                              : 'border-slate-200 bg-white/70 hover:bg-white text-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <div
+                              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                                windowsVersion === 'win7'
+                                  ? 'bg-teal-50 text-teal-700 border border-teal-200'
+                                  : 'bg-slate-100 text-slate-500'
+                              }`}
+                            >
+                              <Monitor className="w-4 h-4" />
+                            </div>
+                            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
+                              Legacy
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-black text-slate-950">
+                              {t.fields.win7Title}
+                            </p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              {t.fields.win7Desc}
+                            </p>
                           </div>
                         </button>
                       </div>
