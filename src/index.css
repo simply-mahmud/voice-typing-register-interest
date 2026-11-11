@@ -12,7 +12,7 @@
 }
 
 /* 
- * 2. Kalpurush: scoped strictly to Bengali alphabet, matras, halant and Bengali punctuation (Danda).
+ * 2. Kalpurush: scoped to Bengali alphabet, matras, halant, and punctuation (Danda, comma, exclamation, question mark).
  * CRITICAL: unicode-range prevents Kalpurush's dated serif Latin glyphs from hijacking English words.
  */
 @font-face {
@@ -21,7 +21,7 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0964-0965, U+0980-09FF; /* Bangla script & punctuation ONLY */
+  unicode-range: U+0021, U+002C, U+003F, U+0964-0965, U+0980-09FF; /* Bangla script & punctuation */
 }
 
 @theme {
@@ -139,9 +139,30 @@
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  transition: max-width 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.4s ease,
-              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              margin 0.5s ease;
+  transition: max-width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.22s ease,
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.32s ease;
   vertical-align: baseline;
+}
+
+/* Refined Bengali Title Punctuation (Comma & Exclamation) */
+.title-punct-comma {
+  font-family: "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", sans-serif !important;
+  font-weight: 600 !important;
+  color: #334155;
+  margin-right: 0.16em;
+  display: inline-block;
+  vertical-align: baseline;
+  transform: scale(0.88);
+}
+
+.title-punct-excl {
+  font-family: "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", sans-serif !important;
+  font-weight: 700 !important;
+  color: #0d9488;
+  margin-left: 0.12em;
+  display: inline-block;
+  vertical-align: baseline;
+  transform: scale(0.92);
 }
