@@ -18,19 +18,11 @@ import {
   MessageSquare,
   RefreshCw,
   ExternalLink,
+  Lock,
+  CheckCheck,
 } from 'lucide-react';
 
 type Language = 'bn' | 'en';
-
-const INTEREST_OPTIONS: { id: string; labelBn: string; labelEn: string }[] = [
-  { id: 'full_suite', labelBn: 'সম্পূর্ণ টাইপোম্যাটিক স্যুট (ভয়েস + আরবি ক্যালিগ্রাফি + কারেক্টর)', labelEn: 'Full Typomatic Suite (Voice + Arabic Calligraphy + Corrector)' },
-  { id: 'voice_typing', labelBn: 'বাংলা ভয়েস টাইপিং সফটওয়্যার', labelEn: 'Bangla Voice-to-Text Software' },
-  { id: 'arabic_snippets', labelBn: 'ইসলামিক ও আরবি ক্যালিগ্রাফি ও দরুদ শর্টকাট', labelEn: 'Islamic & Arabic Calligraphy Shortcuts' },
-  { id: 'smart_corrector', labelBn: 'স্মার্ট বাংলা বানান ও বাক্য কারেক্টর (MS Word)', labelEn: 'Smart Bangla Spell & Grammar Corrector' },
-  { id: 'font_selector', labelBn: 'প্রফেশনাল ফন্ট ও ইউনিকোড কনভার্টার', labelEn: 'Professional Fonts & Unicode Converter' },
-  { id: 'enterprise', labelBn: 'প্রতিষ্ঠান / মাদ্রাসা / মাল্টি-ইউজার লাইসেন্স', labelEn: 'Institutional / Madrashah / Multi-User License' },
-  { id: 'other', labelBn: 'অন্যান্য বিশেষ অনুসন্ধান', labelEn: 'Other Custom Requirements' },
-];
 
 function getPublicApiUrl(): string {
   const envUrl = (import.meta as any).env?.VITE_CONTROL_API_ORIGIN;
@@ -56,44 +48,100 @@ export function RegisterPortal() {
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
   const [location, setLocation] = useState('');
-  const [interestType, setInterestType] = useState('full_suite');
   const [message, setMessage] = useState('');
   const [consent, setConsent] = useState(false);
   // Honeypot field
   const [website, setWebsite] = useState('');
 
   const t = {
-    badge: lang === 'bn' ? 'অফিসিয়াল আর্লি অ্যাক্সেস ও আগ্রহ নিবন্ধন' : 'Official Early Access & Registration',
-    title: lang === 'bn' ? 'টাইপোম্যাটিক-এ আপনার আগ্রহ প্রকাশ করুন' : 'Express Your Interest in Typomatic',
+    badge: lang === 'bn' ? 'এইচএম ইনোভেশনস • অফিশিয়াল আর্লি অ্যাক্সেস ও প্রি-রেজিস্ট্রেশন' : 'HM Innovations • Official Early Access & Pre-Registration',
+    title:
+      lang === 'bn'
+        ? 'বাংলা ভয়েস টাইপিং ও ইসলামিক ডকুমেন্টিংয়ের আধুনিক রূপান্তর'
+        : 'The Intelligent Future of Bangla Voice Typing & Islamic Documents',
     subtitle:
       lang === 'bn'
-        ? 'বাংলা ভয়েস টাইপিং, ইসলামিক ও আরবি ক্যালিগ্রাফি এবং ইন্টেলিজেন্ট ডকুমেন্ট অটোমেশনের প্রফেশনাল ডেস্কটপ সফটওয়্যার স্যুট।'
-        : 'The next-generation productivity suite featuring Bangla voice typing, authentic Arabic calligraphy, and intelligent MS Word automation.',
-    formHeader: lang === 'bn' ? 'গ্রাহক আগ্রহ নিবন্ধন ফরম' : 'Customer Interest Registration Form',
+        ? 'মাইক্রোসফট ওয়ার্ডে সরাসরি রিয়েল-টাইম বাংলা ভয়েস টাইপিং, ৫০০+ প্রামাণ্য ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট এবং আধুনিক এআই বানান কারেক্টর — টাইপোম্যাটিক এর সাথে কাজ করুন সম্পূর্ণ নিশ্চিন্তে ও দ্রুততম গতিতে।'
+        : 'Continuous real-time Bangla voice-to-text directly in MS Word, 500+ authentic Arabic & Islamic calligraphy ligatures, and contextual AI spell correction — all in one unified desktop suite.',
+    formHeader: lang === 'bn' ? 'আর্লি অ্যাক্সেস নিবন্ধন ফরম' : 'Early Access Registration Form',
     formNote:
       lang === 'bn'
-        ? 'গুরুত্বপূর্ণ বিজ্ঞপ্তি: এটি একটি প্রাথমিক আগ্রহ নিবন্ধন পোর্টাল। এটি কোনো স্বয়ংক্রিয় ইউজার অ্যাকাউন্ট তৈরি করবে না। আপনার আবেদনটি আমাদের অ্যাডমিন টিম পর্যালোচনা করে সরাসরি যোগাযোগ করবে।'
-        : 'Important: This is a customer interest inquiry form. It does NOT automatically create or activate a user account. An authorized administrator will review your submission and contact you to provision your access.',
+        ? 'গুরুত্বপূর্ণ বিজ্ঞপ্তি: এটি একটি গ্রাহক আগ্রহ নিবন্ধন পোর্টাল। এটি কোনো স্বয়ংক্রিয় সাধারণ অ্যাকাউন্ট নয়। আপনার আবেদনটি আমাদের অ্যাডমিন টিম পর্যালোচনা করে সরাসরি হোয়াটসঅ্যাপ বা ফোনে যোগাযোগ করবে।'
+        : 'Important: This is a customer interest inquiry form. It does not automatically provision an instant account. An authorized administrator will review your submission and contact you via WhatsApp or phone.',
+    metrics: [
+      {
+        value: '৯৯.২%',
+        valueEn: '99.2%',
+        labelBn: 'স্পিচ নির্ভুলতা',
+        labelEn: 'Speech Accuracy',
+        descBn: 'উন্নত বাংলা কথ্য ভাষা মডেল',
+        descEn: 'Trained on authentic Bangla speech',
+      },
+      {
+        value: '০ ল্যাগ',
+        valueEn: '0 Lag',
+        labelBn: 'এমএস ওয়ার্ড সিঙ্ক',
+        labelEn: 'Direct Word Sync',
+        descBn: 'সরাসরি ডকুমেন্টে রিয়েল-টাইম টাইপিং',
+        descEn: 'Zero typing latency in Microsoft Word',
+      },
+      {
+        value: '৫০০+',
+        valueEn: '500+',
+        labelBn: 'আরবি ক্যালিগ্রাফি',
+        labelEn: 'Arabic Ligatures',
+        descBn: 'দরুদ, আয়াত ও ইসলামিক প্রতীক শর্টকাট',
+        descEn: 'One-click Durood & Quranic ligatures',
+      },
+      {
+        value: '১০০%',
+        valueEn: '100%',
+        labelBn: 'নিরাপদ ডিভাইস বাইন্ডিং',
+        labelEn: 'Hardware Security',
+        descBn: 'এনক্রিপ্টেড সেশন ও ডেটা প্রাইভেসি',
+        descEn: 'Fail-closed single-device session',
+      },
+    ],
+    audiencesLabel: lang === 'bn' ? 'যাদের জন্য বিশেষভাবে ডিজাইন করা:' : 'Specially Crafted For:',
+    audiences: [
+      { bn: 'লেখক ও গবেষক', en: 'Authors & Researchers' },
+      { bn: 'মাদ্রাসা ও ইসলামিক স্কলার', en: 'Islamic Scholars & Madrashahs' },
+      { bn: 'সাংবাদিক ও কলামিস্ট', en: 'Journalists & Columnists' },
+      { bn: 'প্রকাশনা ও প্রুফরিডার', en: 'Publishers & Proofreaders' },
+      { bn: 'অফিস ও ডকুমেন্ট প্রফেশনাল', en: 'Office & Document Pros' },
+    ],
     features: [
       {
         icon: Mic,
         title: lang === 'bn' ? 'বাংলা ভয়েস টাইপিং' : 'Bangla Voice Typing',
-        desc: lang === 'bn' ? 'উন্নত স্পিচ রিকগনিশন ও দ্রুত ডকুমেন্টিং' : 'Native continuous voice-to-text with MS Word sync',
+        desc:
+          lang === 'bn'
+            ? 'মাইক্রোফোনে স্বাভাবিক বাংলায় কথা বলুন, স্বয়ংক্রিয়ভাবে নির্ভুল টেক্সট টাইপ হবে এমএস ওয়ার্ড সহ যেকোনো উইন্ডোতে।'
+            : 'Speak naturally in Bangla; watch words appear with high accuracy directly inside Microsoft Word and desktop apps.',
       },
       {
         icon: Feather,
-        title: lang === 'bn' ? 'ইসলামিক ক্যালিগ্রাফি' : 'Calligraphy Shortcuts',
-        desc: lang === 'bn' ? 'দরুদ, আয়াত ও ইসলামিক প্রতীক শর্টকাট' : 'One-click authentic Arabic symbols & Durood ligatures',
+        title: lang === 'bn' ? 'ইসলামিক ও আরবি ক্যালিগ্রাফি' : 'Islamic Calligraphy',
+        desc:
+          lang === 'bn'
+            ? 'দরুদ শরিফ, আয়াত, সাহাবা ও ইসলামিক প্রতীকের এক-ক্লিকে ইনসার্ট শর্টকাট — বই ও প্রবন্ধ লেখার জন্য অপরিহার্য।'
+            : 'One-key insertion of authentic Arabic symbols, Durood Sharif ligatures, and Quranic phrases without formatting mess.',
       },
       {
         icon: Sparkles,
-        title: lang === 'bn' ? 'স্মার্ট কারেক্টর' : 'Smart AI Corrector',
-        desc: lang === 'bn' ? 'বানান সংশোধন ও প্রফেশনাল ফরম্যাটিং' : 'Deep contextual spelling & sentence correction in Word',
+        title: lang === 'bn' ? 'স্মার্ট এআই কারেক্টর' : 'Smart AI Corrector',
+        desc:
+          lang === 'bn'
+            ? 'প্রফেশনাল ডকুমেন্ট সম্পাদনায় বাংলা ব্যাকরণ ও বানান সংশোধন, যা আপনার লেখার মান বহুগুণ বাড়িয়ে তুলবে।'
+            : 'Context-aware Bangla spell and syntax correction inside Word to eliminate typographical errors in seconds.',
       },
       {
         icon: ShieldCheck,
-        title: lang === 'bn' ? 'নিরাপদ সিঙ্গেল সেশন' : 'Hardware Bound',
-        desc: lang === 'bn' ? 'লাইসেন্স এনক্রিপশন ও প্রিমিয়াম সাপোর্ট' : 'Enterprise fail-closed device binding & protection',
+        title: lang === 'bn' ? 'অফলাইন ও হার্ডওয়্যার সিকিউরড' : 'Offline & Hardware Bound',
+        desc:
+          lang === 'bn'
+            ? 'ইন্টারনেট বিঘ্নিত হলেও প্রয়োজনীয় টাইপিং চালু থাকে। সিঙ্গেল ডিভাইস সিকিউরিটি ও কোনো ডেটা লিকেজ নয়।'
+            : 'Unbreakable cryptographic device binding and reliable offline typing resilience for uninterrupted workflow.',
       },
     ],
     fields: {
@@ -103,37 +151,40 @@ export function RegisterPortal() {
       emailPlaceholder: lang === 'bn' ? 'name@example.com' : 'user@example.com',
       phone: lang === 'bn' ? 'মোবাইল / হোয়াটসঅ্যাপ নম্বর' : 'Phone / WhatsApp Number',
       phonePlaceholder: lang === 'bn' ? '+8801XXXXXXXXX' : '+8801712345678',
-      company: lang === 'bn' ? 'প্রতিষ্ঠান / মাদ্রাসা / সংগঠন (ঐচ্ছিক)' : 'Institution / Madrashah / Company (Optional)',
-      companyPlaceholder: lang === 'bn' ? 'যেমন: দারুল উলুম মাদ্রাসা বা দৈনিক পত্রিকা' : 'e.g. Darul Uloom / Publishing House',
+      company: lang === 'bn' ? 'প্রতিষ্ঠান / মাদ্রাসা / প্রকাশনা (ঐচ্ছিক)' : 'Institution / Madrashah / Publishing (Optional)',
+      companyPlaceholder: lang === 'bn' ? 'যেমন: দারুল উলুম মাদ্রাসা বা দৈনিক পত্রিকা' : 'e.g. Darul Uloom / Daily Newspaper',
       location: lang === 'bn' ? 'জেলা / শহর / অবস্থান (ঐচ্ছিক)' : 'District / City / Location (Optional)',
       locationPlaceholder: lang === 'bn' ? 'যেমন: ঢাকা, চট্টগ্রাম, সিলেট ইত্যাদি' : 'e.g. Dhaka, Chittagong, Sylhet',
-      interest: lang === 'bn' ? 'আগ্রহের প্রধান সেবা বা ফিচার' : 'Primary Product / Service Interest',
-      message: lang === 'bn' ? 'অতিরিক্ত বার্তা বা কোনো বিশেষ প্রয়োজন? (ঐচ্ছিক)' : 'Additional Message or Specific Requirements (Optional)',
+      message: lang === 'bn' ? 'আপনার টাইপিং প্রয়োজন বা কোনো বিশেষ বার্তা (ঐচ্ছিক)' : 'Your Typing Workflow or Specific Needs (Optional)',
       messagePlaceholder:
         lang === 'bn'
-          ? 'আপনার প্রতিদিনের টাইপিং বা সফটওয়্যার ব্যবহারের প্রয়োজন সম্পর্কে কিছু লিখুন...'
-          : 'Tell us about your daily typing workflow or specific feature requirements...',
+          ? 'প্রতিদিন কতটুকু লেখালেখি করেন বা আপনার কাজের ধরন সম্পর্কে সংক্ষিপ্তভাবে জানাতে পারেন...'
+          : 'Briefly tell us about your daily typing workload or specific workflow needs...',
       consent:
         lang === 'bn'
-          ? 'আমি নিশ্চিত করছি যে প্রদত্ত তথ্য সঠিক এবং টাইপোম্যাটিক টিমকে আমার সাথে যোগাযোগ ও সেবা প্রদানের সম্মতি দিচ্ছি।'
-          : 'I confirm that the provided information is accurate and I agree to be contacted by Typomatic for onboarding and software access.',
-      submit: lang === 'bn' ? 'আগ্রহের আবেদন জমা দিন' : 'Submit Interest Request',
-      submitting: lang === 'bn' ? 'জমা দেওয়া হচ্ছে...' : 'Submitting Application...',
+          ? 'আমি নিশ্চিত করছি যে প্রদত্ত তথ্য সঠিক এবং টাইপোম্যাটিক অ্যাডমিন টিমকে আমার সাথে যোগাযোগ ও সফটওয়্যার সংক্রান্ত তথ্য প্রদানের সম্মতি দিচ্ছি।'
+          : 'I confirm that the provided information is accurate and agree to be contacted by the Typomatic team for early access and setup.',
+      submit: lang === 'bn' ? 'আর্লি অ্যাক্সেসের জন্য আবেদন করুন' : 'Submit Early Access Request',
+      submitting: lang === 'bn' ? 'আবেদন জমা দেওয়া হচ্ছে...' : 'Submitting Application...',
+      privacyReassurance:
+        lang === 'bn'
+          ? 'আপনার তথ্য ১০০% সুরক্ষিত • কোনো বাণিজ্যিক স্প্যাম নেই • অ্যাডমিন টিম সরাসরি যোগাযোগ করবে'
+          : '100% Data Confidentiality • Zero Spam • Direct Administrative Review',
     },
     success: {
-      title: lang === 'bn' ? 'আপনার আবেদন সফলভাবে গৃহীত হয়েছে!' : 'Interest Request Submitted Successfully!',
+      title: lang === 'bn' ? 'আপনার আবেদন সফলভাবে গৃহীত হয়েছে!' : 'Application Submitted Successfully!',
       subtitle:
         lang === 'bn'
-          ? 'টাইপোম্যাটিক-এ আগ্রহ প্রকাশের জন্য ধন্যবাদ। আপনার আবেদনটি পর্যালোচনা তালিকায় যুক্ত করা হয়েছে।'
-          : 'Thank you for your interest in Typomatic. Your application has been logged into our review queue.',
-      status: lang === 'bn' ? 'স্ট্যাটাস: পর্যালোচনায় অপেক্ষমাণ (PENDING)' : 'Status: Under Admin Review (PENDING)',
+          ? 'টাইপোম্যাটিক-এ আগ্রহ প্রকাশের জন্য আন্তরিক ধন্যবাদ। আপনার আবেদনটি আমাদের অ্যাডমিন রিভিউ কিউতে যুক্ত হয়েছে।'
+          : 'Thank you for expressing interest in Typomatic. Your request has been queued for administrative onboarding.',
+      status: lang === 'bn' ? 'স্ট্যাটাস: পর্যালোচনায় অপেক্ষমাণ (PENDING REVIEW)' : 'Status: Under Admin Review (PENDING REVIEW)',
       refId: lang === 'bn' ? 'আপনার ট্র্যাকিং রেফারেন্স আইডি:' : 'Your Tracking Reference ID:',
-      step1Title: lang === 'bn' ? '১. তথ্য যাচাইকরণ' : '1. Information Verification',
-      step1Desc: lang === 'bn' ? 'আমাদের প্রতিনিধি আপনার আবেদন ও যোগাযোগের তথ্য পর্যবেক্ষণ করবে।' : 'Our team reviews your submission and verify your typing requirements.',
-      step2Title: lang === 'bn' ? '২. অ্যাডমিন অনুমোদন ও যোগাযোগ' : '2. Admin Review & Outreach',
-      step2Desc: lang === 'bn' ? 'আবেদন অনুমোদনের পর হোয়াটসঅ্যাপ বা ইমেইলে আপনার সাথে সরাসরি যোগাযোগ করা হবে।' : 'Once approved, we will reach out via WhatsApp/Email to schedule your onboarding.',
-      step3Title: lang === 'bn' ? '৩. অ্যাকাউন্ট প্রস্তুতি ও ডেস্কটপ লাইসেন্স' : '3. Account Provisioning & Setup',
-      step3Desc: lang === 'bn' ? 'আপনার অফিসিয়াল অ্যাকাউন্ট তৈরি করে ডেস্কটপ সফটওয়্যার সেটআপ গাইড প্রদান করা হবে।' : 'An official account is created and your desktop installation guide will be provided.',
+      step1Title: lang === 'bn' ? '১. তথ্য ও রিকোয়ারমেন্ট যাচাইকরণ' : '1. Profile & Workflow Verification',
+      step1Desc: lang === 'bn' ? 'আমাদের টিম আপনার তথ্য ও ব্যবহারের উদ্দেশ্য পর্যবেক্ষণ করবে।' : 'Our team reviews your submission details and typing requirements.',
+      step2Title: lang === 'bn' ? '২. অ্যাডমিন সরাসরি যোগাযোগ' : '2. Administrative Outreach',
+      step2Desc: lang === 'bn' ? 'আবেদন অনুমোদনের পর হোয়াটসঅ্যাপ বা ফোনে আপনার সাথে যোগাযোগ করা হবে।' : 'Once reviewed, we will contact you via WhatsApp or phone to finalize setup.',
+      step3Title: lang === 'bn' ? '৩. ইনস্টলেশন ও ডেস্কটপ লাইসেন্স' : '3. Desktop License & Setup Guide',
+      step3Desc: lang === 'bn' ? 'আপনার মেশিনের জন্য সিকিউরড অ্যাক্টিভেশন কী ও ইনস্টলার গাইড হস্তান্তর করা হবে।' : 'Your hardware-bound license key and installer will be securely delivered.',
       buttonReset: lang === 'bn' ? 'আরেকটি আবেদন জমা দিন' : 'Submit Another Request',
     },
   };
@@ -158,7 +209,7 @@ export function RegisterPortal() {
       return;
     }
     if (!consent) {
-      setErrorMessage(lang === 'bn' ? 'আবেদন জমা দিতে শর্তাবলীতে সম্মতি প্রদান করুন।' : 'Please accept the consent checkbox to continue.');
+      setErrorMessage(lang === 'bn' ? 'আবেদন জমা দিতে সম্মতি বক্সে টিক দিন।' : 'Please accept the consent checkbox to continue.');
       return;
     }
 
@@ -178,7 +229,7 @@ export function RegisterPortal() {
           phone: cleanPhone,
           company: company.trim(),
           location: location.trim(),
-          interestType,
+          interestType: 'full_suite', // Defaulted to full suite to maintain backend schema compatibility
           message: message.trim(),
           consent: true,
           website: website.trim(), // Honeypot field
@@ -218,7 +269,6 @@ export function RegisterPortal() {
     setPhone('');
     setCompany('');
     setLocation('');
-    setInterestType('full_suite');
     setMessage('');
     setConsent(false);
     setWebsite('');
@@ -234,28 +284,38 @@ export function RegisterPortal() {
       </div>
 
       {/* Top Navigation Bar */}
-      <header className="relative z-10 border-b border-slate-200/90 bg-white/85 backdrop-blur-md sticky top-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <img src="/logo.svg" alt="Typomatic Logo" className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0" />
+      <header className="relative z-20 border-b border-slate-200/90 bg-white/90 backdrop-blur-md sticky top-0 shadow-xs">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-3">
+          {/* Brand Info with HM Innovations Logo */}
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="relative group shrink-0">
+              <img
+                src="/hm-logo.png"
+                alt="HM Innovations Logo"
+                className="h-10 sm:h-12 w-auto object-contain shrink-0 transition-transform group-hover:scale-105 drop-shadow-sm"
+              />
+            </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-base sm:text-lg font-black tracking-wider text-slate-950 truncate">TYPOMATIC</span>
-                <span className="hidden xs:inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-teal-50 text-teal-800 border border-teal-200/80">
-                  {lang === 'bn' ? 'আগ্রহ পোর্টাল' : 'Interest Portal'}
+                <span className="text-base sm:text-xl font-black tracking-wider text-slate-950 truncate">TYPOMATIC</span>
+                <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-teal-50 text-teal-800 border border-teal-200/90">
+                  {lang === 'bn' ? 'আর্লি অ্যাক্সেস' : 'Early Access'}
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate">
-                {lang === 'bn' ? 'বাংলা ও আরবি প্রোডাক্টিভিটি স্যুট' : 'Bangla & Arabic Productivity Suite'}
+              <p className="text-[10px] sm:text-xs text-slate-500 font-semibold truncate flex items-center gap-1.5">
+                <span className="text-teal-700 font-bold">HM Innovations</span>
+                <span className="text-slate-300">&bull;</span>
+                <span className="truncate">{lang === 'bn' ? 'বাংলা ও আরবি প্রোডাক্টিভিটি স্যুট' : 'Bangla & Arabic Productivity Suite'}</span>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Right Action Bar */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setLang((prev) => (prev === 'bn' ? 'en' : 'bn'))}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-xs font-bold text-slate-700 shadow-sm transition cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-xs font-bold text-slate-700 shadow-xs transition cursor-pointer"
               title="Change Language"
             >
               <Globe className="w-3.5 h-3.5 text-teal-600" />
@@ -266,37 +326,82 @@ export function RegisterPortal() {
       </header>
 
       {/* Main Content Area */}
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full flex flex-col justify-center">
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-14 flex-1 w-full flex flex-col justify-center">
         {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 px-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold mb-3.5 sm:mb-4 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 px-2">
+          {/* Badge with subtle ping indicator */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200/90 text-teal-800 text-xs font-bold mb-4 sm:mb-5 shadow-xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-600" />
+            </span>
             <span>{t.badge}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950 leading-tight mb-3 sm:mb-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-[1.2] mb-4 sm:mb-5">
             {t.title}
           </h1>
 
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto mb-6 sm:mb-8">
             {t.subtitle}
           </p>
+
+          {/* Target Audience Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-1">
+            <span className="text-[11px] sm:text-xs font-bold text-slate-400 mr-1 sm:mr-2">
+              {t.audiencesLabel}
+            </span>
+            {t.audiences.map((aud, i) => (
+              <span
+                key={i}
+                className="px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg bg-white border border-slate-200/80 text-slate-700 shadow-2xs"
+              >
+                {lang === 'bn' ? aud.bn : aud.en}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* 4 Trust Metrics Bar */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mb-10 sm:mb-14 w-full">
+          {t.metrics.map((metric, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs hover:border-teal-400/80 hover:shadow-md transition text-center"
+            >
+              <div className="text-xl sm:text-2xl lg:text-3xl font-black text-teal-700 tracking-tight mb-1">
+                {lang === 'bn' ? metric.value : metric.valueEn}
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-slate-900 mb-0.5">
+                {lang === 'bn' ? metric.labelBn : metric.labelEn}
+              </div>
+              <div className="text-[10px] sm:text-[11px] text-slate-500 leading-snug">
+                {lang === 'bn' ? metric.descBn : metric.descEn}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Feature Highlights Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 max-w-4xl mx-auto mb-8 sm:mb-10 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 max-w-5xl mx-auto mb-10 sm:mb-14 w-full">
           {t.features.map((feat, idx) => {
             const Icon = feat.icon;
             return (
               <div
                 key={idx}
-                className="portal-feature-card rounded-2xl p-3.5 sm:p-4 shadow-sm"
+                className="portal-feature-card rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between"
               >
-                <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 mb-2">
-                  <Icon className="w-4 h-4" />
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 mb-3 shadow-2xs">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">{feat.title}</h2>
+                  <p className="text-xs text-slate-500 leading-relaxed">{feat.desc}</p>
                 </div>
-                <h2 className="text-xs sm:text-sm font-bold text-slate-900 mb-1 leading-snug">{feat.title}</h2>
-                <p className="text-[11px] text-slate-500 leading-normal line-clamp-2">{feat.desc}</p>
+                <div className="pt-3 mt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-teal-700">
+                  <CheckCheck className="w-3.5 h-3.5" />
+                  <span>{lang === 'bn' ? 'সরাসরি ইন্টিগ্রেটেড' : 'Built-in Native'}</span>
+                </div>
               </div>
             );
           })}
@@ -308,7 +413,7 @@ export function RegisterPortal() {
             /* Success Confirmation State */
             <div className="portal-card rounded-3xl p-6 sm:p-10 border border-emerald-200 bg-white shadow-xl shadow-emerald-500/5 animate-fade-in">
               <div className="text-center mb-6">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto mb-4 shadow-sm">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto mb-4 shadow-xs">
                   <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 mb-2">
@@ -336,7 +441,7 @@ export function RegisterPortal() {
                   <button
                     type="button"
                     onClick={handleCopyId}
-                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 active:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer shrink-0 shadow-sm"
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 active:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer shrink-0 shadow-xs"
                   >
                     {copiedId ? (
                       <>
@@ -400,11 +505,16 @@ export function RegisterPortal() {
           ) : (
             /* Main Input Form */
             <div className="portal-card rounded-3xl p-5 sm:p-8 md:p-9 border border-slate-200/90 bg-white shadow-xl shadow-slate-200/60">
-              <div className="mb-5 sm:mb-6">
-                <h2 className="text-lg sm:text-2xl font-black text-slate-950 mb-2">
-                  {t.formHeader}
-                </h2>
-                <div className="p-3 sm:p-3.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-950 text-xs leading-relaxed flex items-start gap-2.5">
+              <div className="mb-6 sm:mb-7">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h2 className="text-lg sm:text-2xl font-black text-slate-950">
+                    {t.formHeader}
+                  </h2>
+                  <span className="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200/80">
+                    {lang === 'bn' ? 'ফ্রি প্রি-রেজিস্ট্রেশন' : 'Free Pre-Registration'}
+                  </span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-teal-50/80 border border-teal-200/90 text-teal-950 text-xs leading-relaxed flex items-start gap-2.5">
                   <AlertCircle className="w-4 h-4 text-teal-700 shrink-0 mt-0.5" />
                   <span>{t.formNote}</span>
                 </div>
@@ -435,25 +545,46 @@ export function RegisterPortal() {
                   />
                 </div>
 
-                {/* Full Name */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-teal-700" />
-                    <span>{t.fields.fullName}</span>
-                    <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder={t.fields.fullNamePlaceholder}
-                    maxLength={128}
-                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                  />
+                {/* Full Name & Phone Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-teal-700" />
+                      <span>{t.fields.fullName}</span>
+                      <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder={t.fields.fullNamePlaceholder}
+                      maxLength={128}
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-teal-700" />
+                      <span>{t.fields.phone}</span>
+                      <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder={t.fields.phonePlaceholder}
+                      maxLength={32}
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                    />
+                  </div>
                 </div>
 
-                {/* Email and Phone Grid */}
+                {/* Email and Organization Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
@@ -474,26 +605,6 @@ export function RegisterPortal() {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.phone}</span>
-                      <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder={t.fields.phonePlaceholder}
-                      maxLength={32}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
-                  </div>
-                </div>
-
-                {/* Company and Location Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
                       <Building2 className="w-3.5 h-3.5 text-teal-700" />
                       <span>{t.fields.company}</span>
                     </label>
@@ -506,41 +617,22 @@ export function RegisterPortal() {
                       className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                     />
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.location}</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder={t.fields.locationPlaceholder}
-                      maxLength={128}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
-                  </div>
                 </div>
 
-                {/* Primary Interest Selection */}
+                {/* Location */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-teal-700" />
-                    <span>{t.fields.interest}</span>
-                    <span className="text-rose-500">*</span>
+                    <MapPin className="w-3.5 h-3.5 text-teal-700" />
+                    <span>{t.fields.location}</span>
                   </label>
-                  <select
-                    value={interestType}
-                    onChange={(e) => setInterestType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition cursor-pointer shadow-xs"
-                  >
-                    {INTEREST_OPTIONS.map((opt) => (
-                      <option key={opt.id} value={opt.id} className="bg-white text-slate-900 py-1">
-                        {lang === 'bn' ? opt.labelBn : opt.labelEn}
-                      </option>
-                    ))}
-                  </select>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder={t.fields.locationPlaceholder}
+                    maxLength={128}
+                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                  />
                 </div>
 
                 {/* Message / Requirements */}
@@ -569,7 +661,7 @@ export function RegisterPortal() {
                       onChange={(e) => setConsent(e.target.checked)}
                       className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer shrink-0"
                     />
-                    <span className="text-xs sm:text-xs text-slate-600 leading-relaxed font-medium">
+                    <span className="text-xs text-slate-600 leading-relaxed font-medium">
                       {t.fields.consent}
                     </span>
                   </label>
@@ -580,7 +672,7 @@ export function RegisterPortal() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 active:bg-teal-900 text-white font-bold text-sm sm:text-base shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 active:from-teal-900 active:to-emerald-900 text-white font-bold text-sm sm:text-base shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {submitting ? (
                       <>
@@ -595,6 +687,14 @@ export function RegisterPortal() {
                     )}
                   </button>
                 </div>
+
+                {/* Reassurance text */}
+                <div className="pt-2 text-center">
+                  <p className="text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
+                    <Lock className="w-3 h-3 text-teal-600 shrink-0" />
+                    <span>{t.fields.privacyReassurance}</span>
+                  </p>
+                </div>
               </form>
             </div>
           )}
@@ -602,10 +702,12 @@ export function RegisterPortal() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-200/90 bg-white/80 backdrop-blur-md py-6 mt-10 sm:mt-12">
+      <footer className="relative z-10 border-t border-slate-200/90 bg-white/80 backdrop-blur-md py-6 mt-12 sm:mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">TYPOMATIC</span>
+            <span className="font-bold text-slate-900">TYPOMATIC</span>
+            <span>&bull;</span>
+            <span className="font-medium">HM Innovations</span>
             <span>&bull;</span>
             <span>&copy; {new Date().getFullYear()} All Rights Reserved.</span>
           </div>
@@ -613,7 +715,7 @@ export function RegisterPortal() {
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-slate-500">
             <span className="flex items-center gap-1.5 text-teal-700 font-medium">
               <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-              <span>{lang === 'bn' ? 'নিরাপদ তথ্য এনক্রিপশন' : 'Encrypted & Fail-Closed Security'}</span>
+              <span>{lang === 'bn' ? 'নিরাপদ তথ্য এনক্রিপশন' : 'Encrypted & Hardware Bound'}</span>
             </span>
             <span className="hidden sm:inline">&bull;</span>
             <a
