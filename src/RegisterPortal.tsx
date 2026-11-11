@@ -52,6 +52,118 @@ function getPublicApiUrl(): string {
   return 'https://voice-api.trustedsubstore.com/v1/public/register-interest';
 }
 
+interface BrandMorphEyebrowProps {
+  lang: Language;
+}
+
+function BrandMorphEyebrow({ lang }: BrandMorphEyebrowProps) {
+  const [isMerged, setIsMerged] = useState(true);
+
+  useEffect(() => {
+    // Cycle: 4.2s on TYPOMATIC (grand brand view), 2.8s on TYPE + AUTOMATIC (equation view)
+    const timeout = setTimeout(() => {
+      setIsMerged((prev) => !prev);
+    }, isMerged ? 4200 : 2800);
+
+    return () => clearTimeout(timeout);
+  }, [isMerged]);
+
+  return (
+    <div
+      onClick={() => setIsMerged((prev) => !prev)}
+      title={lang === 'bn' ? 'ক্লিক করে অ্যানিমেশন টগল করুন: Type + Automatic = Typomatic' : 'Click to toggle animation: Type + Automatic = Typomatic'}
+      className="group cursor-pointer inline-flex flex-col items-center justify-center select-none"
+    >
+      <div className="inline-flex items-center justify-center h-8 sm:h-9">
+        {/* Left Accent Bar */}
+        <span
+          style={{
+            width: isMerged ? '28px' : '0px',
+            opacity: isMerged ? 0.85 : 0,
+            marginRight: isMerged ? '12px' : '0px',
+          }}
+          className="h-0.5 rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-transparent to-teal-600 shrink-0"
+        />
+
+        {/* Morphing Wordmark */}
+        <span className="brand-morph-tag text-xs sm:text-sm md:text-base text-teal-700">
+          {/* TYP (Always visible root) */}
+          <span className="transition-colors duration-300">TYP</span>
+
+          {/* E (Folds away when merged) */}
+          <span
+            style={{
+              maxWidth: isMerged ? '0px' : '16px',
+              opacity: isMerged ? 0 : 1,
+              transform: isMerged ? 'translateX(-4px)' : 'translateX(0)',
+            }}
+            className="brand-morph-collapsible text-emerald-600"
+          >
+            E
+          </span>
+
+          {/* + (Folds away when merged) */}
+          <span
+            style={{
+              maxWidth: isMerged ? '0px' : '20px',
+              opacity: isMerged ? 0 : 1,
+              transform: isMerged ? 'scale(0.3)' : 'scale(1)',
+              marginLeft: isMerged ? '0px' : '6px',
+              marginRight: isMerged ? '0px' : '6px',
+            }}
+            className="brand-morph-collapsible text-teal-500 font-extrabold"
+          >
+            +
+          </span>
+
+          {/* AUT (Folds away when merged) */}
+          <span
+            style={{
+              maxWidth: isMerged ? '0px' : '44px',
+              opacity: isMerged ? 0 : 1,
+              transform: isMerged ? 'translateX(4px)' : 'translateX(0)',
+            }}
+            className="brand-morph-collapsible text-cyan-600"
+          >
+            AUT
+          </span>
+
+          {/* OMATIC (Always visible suffix) */}
+          <span className="transition-colors duration-300">OMATIC</span>
+        </span>
+
+        {/* Right Accent Bar */}
+        <span
+          style={{
+            width: isMerged ? '28px' : '0px',
+            opacity: isMerged ? 0.85 : 0,
+            marginLeft: isMerged ? '12px' : '0px',
+          }}
+          className="h-0.5 rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-teal-600 to-transparent shrink-0"
+        />
+      </div>
+
+      {/* Formula Explainer Subtitle (Smoothly slides down when in equation mode) */}
+      <div
+        style={{
+          maxHeight: isMerged ? '0px' : '26px',
+          opacity: isMerged ? 0 : 1,
+          transform: isMerged ? 'translateY(-4px)' : 'translateY(0)',
+        }}
+        className="overflow-hidden transition-all duration-400 ease-out mt-0.5"
+      >
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50/90 border border-teal-200/70 text-[10px] sm:text-[11px] font-semibold text-slate-600 shadow-2xs">
+          <span className="text-teal-700 font-black">Type</span>
+          <span className="text-teal-400 font-bold">+</span>
+          <span className="text-cyan-700 font-black">Automatic</span>
+          <span className="text-slate-400">=</span>
+          <span className="text-slate-950 font-black tracking-wider">TYPOMATIC</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function RegisterPortal() {
   const [lang, setLang] = useState<Language>('bn');
   const [submitting, setSubmitting] = useState(false);
@@ -680,12 +792,10 @@ export function RegisterPortal() {
             <span>{t.badge}</span>
           </div>
 
-          {/* Brand & Main Headline */}
+          {/* Brand & Main Headline with Type + Automatic -> Typomatic Animation */}
           <div className="mb-4 sm:mb-5">
             <div className="mb-2 sm:mb-2.5 flex items-center justify-center">
-              <span className="brand-hero-eyebrow text-xs sm:text-sm md:text-base font-black">
-                {t.brandName}
-              </span>
+              <BrandMorphEyebrow lang={lang} />
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-[1.25]">
               {t.title}
