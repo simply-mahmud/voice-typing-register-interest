@@ -1,12 +1,27 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'BanglaNumerals';
+  src: url('/fonts/Kalpurush.ttf') format('truetype');
+  unicode-range: U+09E6-09EF; /* ০, ১, ২, ৩, ৪, ৫, ৬, ৭, ৮, ৯ */
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kalpurush';
+  src: url('/fonts/Kalpurush.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 @layer base {
   :root, html, body {
-    font-family: "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #0f172a;
     background-color: #f8fafc;
     font-synthesis: none;
@@ -21,20 +36,20 @@
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   input,
   textarea,
   select,
   button {
-    font-family: "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   /* Make placeholder text clean, smooth and properly proportioned */
   input::placeholder,
   textarea::placeholder {
-    font-family: "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, sans-serif;
+    font-family: "BanglaNumerals", "Kalpurush", "Hind Siliguri", "Noto Sans Bengali", "Inter", system-ui, -apple-system, sans-serif;
     color: #94a3b8;
     opacity: 0.9;
   }

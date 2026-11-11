@@ -781,7 +781,7 @@ export function RegisterPortal() {
               <div className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8">
                 <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
                   <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                    1
+                    {lang === 'bn' ? '১' : '1'}
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step1Title}</h3>
@@ -791,7 +791,7 @@ export function RegisterPortal() {
 
                 <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
                   <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                    2
+                    {lang === 'bn' ? '২' : '2'}
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step2Title}</h3>
@@ -801,7 +801,7 @@ export function RegisterPortal() {
 
                 <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
                   <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                    3
+                    {lang === 'bn' ? '৩' : '3'}
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step3Title}</h3>
@@ -868,7 +868,7 @@ export function RegisterPortal() {
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      1
+                      {lang === 'bn' ? '১' : '1'}
                     </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {t.step1Title}
@@ -956,7 +956,7 @@ export function RegisterPortal() {
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      2
+                      {lang === 'bn' ? '২' : '2'}
                     </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {t.step2Title}
@@ -1049,7 +1049,7 @@ export function RegisterPortal() {
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      3
+                      {lang === 'bn' ? '৩' : '3'}
                     </div>
                     <div>
                       <h3 className="text-sm sm:text-base font-bold text-slate-900">
@@ -1260,7 +1260,7 @@ export function RegisterPortal() {
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      4
+                      {lang === 'bn' ? '৪' : '4'}
                     </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {t.step4Title}
@@ -1374,7 +1374,7 @@ export function RegisterPortal() {
                 <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
                   <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
                     <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                      5
+                      {lang === 'bn' ? '৫' : '5'}
                     </div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {t.step5Title}
@@ -1427,13 +1427,13 @@ export function RegisterPortal() {
                     <div className="space-y-2 text-xs text-rose-950">
                       <div className="flex items-start gap-2">
                         <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                          1
+                          {lang === 'bn' ? '১' : '1'}
                         </span>
                         <span>{t.fields.bkashStep1}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                          2
+                          {lang === 'bn' ? '২' : '2'}
                         </span>
                         <span>
                           {t.fields.bkashStep2}{' '}
@@ -1444,7 +1444,7 @@ export function RegisterPortal() {
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                          3
+                          {lang === 'bn' ? '৩' : '3'}
                         </span>
                         <span>{t.fields.bkashStep3}</span>
                       </div>
