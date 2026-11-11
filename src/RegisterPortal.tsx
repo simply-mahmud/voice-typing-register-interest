@@ -22,14 +22,14 @@ import {
 
 type Language = 'bn' | 'en';
 
-const INTEREST_OPTIONS: { id: string; labelBn: string; labelEn: string; icon: string }[] = [
-  { id: 'full_suite', labelBn: 'সম্পূর্ণ টাইপোম্যাটিক স্যুট (ভয়েস + আরবি ক্যালিগ্রাফি + কারেক্টর)', labelEn: 'Full Typomatic Suite (Voice + Arabic Calligraphy + Corrector)', icon: '✨' },
-  { id: 'voice_typing', labelBn: 'বাংলা ভয়েস টাইপিং সফটওয়্যার', labelEn: 'Bangla Voice-to-Text Software', icon: '🎙️' },
-  { id: 'arabic_snippets', labelBn: 'ইসলামিক ও আরবি ক্যালিগ্রাফি ও দরুদ শর্টকাট', labelEn: 'Islamic & Arabic Calligraphy Shortcuts', icon: '📜' },
-  { id: 'smart_corrector', labelBn: 'স্মার্ট বাংলা বানান ও বাক্য কারেক্টর (MS Word)', labelEn: 'Smart Bangla Spell & Grammar Corrector', icon: '✍️' },
-  { id: 'font_selector', labelBn: 'প্রফেশনাল ফন্ট ও ইউনিকোড কনভার্টার', labelEn: 'Professional Fonts & Unicode Converter', icon: '🔤' },
-  { id: 'enterprise', labelBn: 'প্রতিষ্ঠান / মাদ্রাসা / মাল্টি-ইউজার লাইসেন্স', labelEn: 'Institutional / Madrashah / Multi-User License', icon: '🏢' },
-  { id: 'other', labelBn: 'অন্যান্য বিশেষ অনুসন্ধান', labelEn: 'Other Custom Requirements', icon: '💬' },
+const INTEREST_OPTIONS: { id: string; labelBn: string; labelEn: string }[] = [
+  { id: 'full_suite', labelBn: 'সম্পূর্ণ টাইপোম্যাটিক স্যুট (ভয়েস + আরবি ক্যালিগ্রাফি + কারেক্টর)', labelEn: 'Full Typomatic Suite (Voice + Arabic Calligraphy + Corrector)' },
+  { id: 'voice_typing', labelBn: 'বাংলা ভয়েস টাইপিং সফটওয়্যার', labelEn: 'Bangla Voice-to-Text Software' },
+  { id: 'arabic_snippets', labelBn: 'ইসলামিক ও আরবি ক্যালিগ্রাফি ও দরুদ শর্টকাট', labelEn: 'Islamic & Arabic Calligraphy Shortcuts' },
+  { id: 'smart_corrector', labelBn: 'স্মার্ট বাংলা বানান ও বাক্য কারেক্টর (MS Word)', labelEn: 'Smart Bangla Spell & Grammar Corrector' },
+  { id: 'font_selector', labelBn: 'প্রফেশনাল ফন্ট ও ইউনিকোড কনভার্টার', labelEn: 'Professional Fonts & Unicode Converter' },
+  { id: 'enterprise', labelBn: 'প্রতিষ্ঠান / মাদ্রাসা / মাল্টি-ইউজার লাইসেন্স', labelEn: 'Institutional / Madrashah / Multi-User License' },
+  { id: 'other', labelBn: 'অন্যান্য বিশেষ অনুসন্ধান', labelEn: 'Other Custom Requirements' },
 ];
 
 function getPublicApiUrl(): string {
@@ -225,38 +225,40 @@ export function RegisterPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col justify-between selection:bg-teal-500/20 selection:text-teal-300">
-      {/* Background aesthetic gradients */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-teal-500/10 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 -right-40 w-[600px] h-[500px] bg-emerald-500/5 rounded-full blur-[140px]" />
-        <div className="absolute -bottom-40 -left-40 w-[600px] h-[500px] bg-cyan-500/5 rounded-full blur-[140px]" />
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col justify-between selection:bg-teal-600/15 selection:text-teal-900 overflow-x-hidden">
+      {/* Background aesthetic ambient light gradients */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] max-w-full h-[450px] bg-teal-500/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 -right-32 w-[550px] max-w-full h-[450px] bg-emerald-500/8 rounded-full blur-[130px]" />
+        <div className="absolute -bottom-32 -left-32 w-[550px] max-w-full h-[450px] bg-cyan-500/8 rounded-full blur-[130px]" />
       </div>
 
-      {/* Top Navigation */}
-      <header className="relative z-10 border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/logo.svg" alt="Typomatic" className="w-9 h-9 object-contain" />
-            <div>
+      {/* Top Navigation Bar */}
+      <header className="relative z-10 border-b border-slate-200/90 bg-white/85 backdrop-blur-md sticky top-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <img src="/logo.svg" alt="Typomatic Logo" className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0" />
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-wider text-white">TYPOMATIC</span>
-                <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
+                <span className="text-base sm:text-lg font-black tracking-wider text-slate-950 truncate">TYPOMATIC</span>
+                <span className="hidden xs:inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-teal-50 text-teal-800 border border-teal-200/80">
                   {lang === 'bn' ? 'আগ্রহ পোর্টাল' : 'Interest Portal'}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium">Bengali & Arabic Desktop Productivity</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate">
+                {lang === 'bn' ? 'বাংলা ও আরবি প্রোডাক্টিভিটি স্যুট' : 'Bangla & Arabic Productivity Suite'}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={() => setLang((prev) => (prev === 'bn' ? 'en' : 'bn'))}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-xs font-semibold text-slate-200 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-xs font-bold text-slate-700 shadow-sm transition cursor-pointer"
               title="Change Language"
             >
-              <Globe className="w-3.5 h-3.5 text-teal-400" />
+              <Globe className="w-3.5 h-3.5 text-teal-600" />
               <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
             </button>
           </div>
@@ -264,37 +266,37 @@ export function RegisterPortal() {
       </header>
 
       {/* Main Content Area */}
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 flex-1 w-full flex flex-col justify-center">
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full flex flex-col justify-center">
         {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-950/70 border border-teal-500/40 text-teal-300 text-xs font-semibold mb-4 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5" />
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 px-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold mb-3.5 sm:mb-4 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-teal-600 shrink-0" />
             <span>{t.badge}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight sm:leading-tight mb-4">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950 leading-tight mb-3 sm:mb-4">
             {t.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+          <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
             {t.subtitle}
           </p>
         </div>
 
         {/* Feature Highlights Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mb-10 w-full">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 max-w-4xl mx-auto mb-8 sm:mb-10 w-full">
           {t.features.map((feat, idx) => {
             const Icon = feat.icon;
             return (
               <div
                 key={idx}
-                className="portal-glass rounded-2xl p-4 border border-slate-800 hover:border-teal-500/40 transition-colors duration-200"
+                className="portal-feature-card rounded-2xl p-3.5 sm:p-4 shadow-sm"
               >
-                <div className="w-8 h-8 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-2.5">
+                <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 mb-2">
                   <Icon className="w-4 h-4" />
                 </div>
-                <h2 className="text-xs sm:text-sm font-bold text-white mb-1">{feat.title}</h2>
-                <p className="text-[11px] text-slate-400 leading-normal">{feat.desc}</p>
+                <h2 className="text-xs sm:text-sm font-bold text-slate-900 mb-1 leading-snug">{feat.title}</h2>
+                <p className="text-[11px] text-slate-500 leading-normal line-clamp-2">{feat.desc}</p>
               </div>
             );
           })}
@@ -304,47 +306,47 @@ export function RegisterPortal() {
         <div className="max-w-2xl mx-auto w-full">
           {successData ? (
             /* Success Confirmation State */
-            <div className="portal-glass rounded-3xl p-6 sm:p-10 border border-emerald-500/30 bg-slate-900/90 shadow-2xl portal-glow animate-fade-in">
+            <div className="portal-card rounded-3xl p-6 sm:p-10 border border-emerald-200 bg-white shadow-xl shadow-emerald-500/5 animate-fade-in">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 rounded-3xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto mb-4">
-                  <CheckCircle2 className="w-8 h-8" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto mb-4 shadow-sm">
+                  <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 mb-2">
                   {t.success.title}
                 </h2>
-                <p className="text-sm text-slate-300">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">
                   {t.success.subtitle}
                 </p>
 
-                <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                   <span>{t.success.status}</span>
                 </div>
               </div>
 
               {/* Reference ID card */}
-              <div className="rounded-2xl bg-slate-950/80 border border-slate-800 p-4 mb-6">
-                <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              <div className="rounded-2xl bg-slate-50 border border-slate-200 p-4 mb-6">
+                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                   {t.success.refId}
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <code className="text-sm sm:text-base font-mono font-bold text-teal-300 select-all break-all">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <code className="text-sm sm:text-base font-mono font-bold text-teal-800 select-all break-all">
                     {successData.requestId}
                   </code>
                   <button
                     type="button"
                     onClick={handleCopyId}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition cursor-pointer shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 active:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer shrink-0 shadow-sm"
                   >
                     {copiedId ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-emerald-400 font-semibold">{lang === 'bn' ? 'কপি হয়েছে' : 'Copied'}</span>
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="text-emerald-700 font-bold">{lang === 'bn' ? 'কপি হয়েছে' : 'Copied'}</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>{lang === 'bn' ? 'কপি' : 'Copy'}</span>
+                        <Copy className="w-3.5 h-3.5 text-slate-500" />
+                        <span>{lang === 'bn' ? 'কপি করুন' : 'Copy ID'}</span>
                       </>
                     )}
                   </button>
@@ -352,34 +354,34 @@ export function RegisterPortal() {
               </div>
 
               {/* Next Steps List */}
-              <div className="space-y-3 mb-8">
-                <div className="p-3.5 rounded-xl bg-slate-950/40 border border-slate-800/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              <div className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8">
+                <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     1
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-slate-200">{t.success.step1Title}</h3>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{t.success.step1Desc}</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step1Title}</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-relaxed">{t.success.step1Desc}</p>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-950/40 border border-slate-800/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     2
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-slate-200">{t.success.step2Title}</h3>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{t.success.step2Desc}</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step2Title}</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-relaxed">{t.success.step2Desc}</p>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-950/40 border border-slate-800/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     3
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-slate-200">{t.success.step3Title}</h3>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{t.success.step3Desc}</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900">{t.success.step3Title}</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-relaxed">{t.success.step3Desc}</p>
                   </div>
                 </div>
               </div>
@@ -388,7 +390,7 @@ export function RegisterPortal() {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-teal-700/15"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>{t.success.buttonReset}</span>
@@ -397,28 +399,28 @@ export function RegisterPortal() {
             </div>
           ) : (
             /* Main Input Form */
-            <div className="portal-glass rounded-3xl p-6 sm:p-8 border border-slate-800 bg-slate-900/80 shadow-2xl portal-glow">
-              <div className="mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center gap-2">
-                  <span>{t.formHeader}</span>
+            <div className="portal-card rounded-3xl p-5 sm:p-8 md:p-9 border border-slate-200/90 bg-white shadow-xl shadow-slate-200/60">
+              <div className="mb-5 sm:mb-6">
+                <h2 className="text-lg sm:text-2xl font-black text-slate-950 mb-2">
+                  {t.formHeader}
                 </h2>
-                <div className="p-3 rounded-xl bg-teal-950/40 border border-teal-500/30 text-teal-200/90 text-xs leading-relaxed flex items-start gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <div className="p-3 sm:p-3.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-950 text-xs leading-relaxed flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-teal-700 shrink-0 mt-0.5" />
                   <span>{t.formNote}</span>
                 </div>
               </div>
 
               {errorMessage && (
-                <div className="mb-6 p-4 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-200 text-xs leading-relaxed flex items-start gap-3">
-                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs leading-relaxed flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-bold text-rose-300">{lang === 'bn' ? 'আবেদন জমায় সমস্যা' : 'Submission Error'}</p>
-                    <p className="mt-0.5 text-rose-200/90">{errorMessage}</p>
+                    <p className="font-bold text-rose-800">{lang === 'bn' ? 'আবেদন জমায় সমস্যা' : 'Submission Error'}</p>
+                    <p className="mt-0.5 text-rose-700">{errorMessage}</p>
                   </div>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4.5">
                 {/* Honeypot field (hidden from legitimate humans) */}
                 <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
                   <label htmlFor="hp_website">Leave this field blank</label>
@@ -435,10 +437,10 @@ export function RegisterPortal() {
 
                 {/* Full Name */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-teal-400" />
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-teal-700" />
                     <span>{t.fields.fullName}</span>
-                    <span className="text-rose-400">*</span>
+                    <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -447,17 +449,17 @@ export function RegisterPortal() {
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder={t.fields.fullNamePlaceholder}
                     maxLength={128}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition"
+                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                   />
                 </div>
 
                 {/* Email and Phone Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-teal-400" />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-teal-700" />
                       <span>{t.fields.email}</span>
-                      <span className="text-rose-400">*</span>
+                      <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="email"
@@ -466,15 +468,15 @@ export function RegisterPortal() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={t.fields.emailPlaceholder}
                       maxLength={256}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition"
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-teal-400" />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-teal-700" />
                       <span>{t.fields.phone}</span>
-                      <span className="text-rose-400">*</span>
+                      <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="tel"
@@ -483,16 +485,16 @@ export function RegisterPortal() {
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder={t.fields.phonePlaceholder}
                       maxLength={32}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition"
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                     />
                   </div>
                 </div>
 
                 {/* Company and Location Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-teal-400" />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-teal-700" />
                       <span>{t.fields.company}</span>
                     </label>
                     <input
@@ -501,13 +503,13 @@ export function RegisterPortal() {
                       onChange={(e) => setCompany(e.target.value)}
                       placeholder={t.fields.companyPlaceholder}
                       maxLength={128}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition"
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-teal-400" />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-teal-700" />
                       <span>{t.fields.location}</span>
                     </label>
                     <input
@@ -516,26 +518,26 @@ export function RegisterPortal() {
                       onChange={(e) => setLocation(e.target.value)}
                       placeholder={t.fields.locationPlaceholder}
                       maxLength={128}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition"
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
                     />
                   </div>
                 </div>
 
                 {/* Primary Interest Selection */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-teal-700" />
                     <span>{t.fields.interest}</span>
-                    <span className="text-rose-400">*</span>
+                    <span className="text-rose-500">*</span>
                   </label>
                   <select
                     value={interestType}
                     onChange={(e) => setInterestType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition cursor-pointer"
+                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition cursor-pointer shadow-xs"
                   >
                     {INTEREST_OPTIONS.map((opt) => (
-                      <option key={opt.id} value={opt.id} className="bg-slate-900 text-slate-100 py-1">
-                        {opt.icon} {lang === 'bn' ? opt.labelBn : opt.labelEn}
+                      <option key={opt.id} value={opt.id} className="bg-white text-slate-900 py-1">
+                        {lang === 'bn' ? opt.labelBn : opt.labelEn}
                       </option>
                     ))}
                   </select>
@@ -543,8 +545,8 @@ export function RegisterPortal() {
 
                 {/* Message / Requirements */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                    <MessageSquare className="w-3.5 h-3.5 text-teal-400" />
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <MessageSquare className="w-3.5 h-3.5 text-teal-700" />
                     <span>{t.fields.message}</span>
                   </label>
                   <textarea
@@ -553,32 +555,32 @@ export function RegisterPortal() {
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={t.fields.messagePlaceholder}
                     maxLength={2048}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition resize-none"
+                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition resize-none shadow-xs"
                   />
                 </div>
 
                 {/* Consent Checkbox */}
-                <div className="pt-2">
-                  <label className="flex items-start gap-3 cursor-pointer select-none">
+                <div className="pt-1">
+                  <label className="flex items-start gap-2.5 sm:gap-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       required
                       checked={consent}
                       onChange={(e) => setConsent(e.target.checked)}
-                      className="mt-0.5 h-4 w-4 rounded border-slate-700 bg-slate-950 text-teal-600 focus:ring-teal-500 focus:ring-offset-slate-900 cursor-pointer"
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer shrink-0"
                     />
-                    <span className="text-xs text-slate-300 leading-relaxed font-normal">
+                    <span className="text-xs sm:text-xs text-slate-600 leading-relaxed font-medium">
                       {t.fields.consent}
                     </span>
                   </label>
                 </div>
 
                 {/* Submit Action */}
-                <div className="pt-3">
+                <div className="pt-2 sm:pt-3">
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-sm shadow-lg shadow-teal-900/30 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 active:bg-teal-900 text-white font-bold text-sm sm:text-base shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {submitting ? (
                       <>
@@ -600,26 +602,26 @@ export function RegisterPortal() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-md py-6 mt-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <footer className="relative z-10 border-t border-slate-200/90 bg-white/80 backdrop-blur-md py-6 mt-10 sm:mt-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-300">TYPOMATIC</span>
+            <span className="font-bold text-slate-800">TYPOMATIC</span>
             <span>&bull;</span>
             <span>&copy; {new Date().getFullYear()} All Rights Reserved.</span>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-400">
-            <span className="flex items-center gap-1.5 text-teal-400/90 font-medium">
-              <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-slate-500">
+            <span className="flex items-center gap-1.5 text-teal-700 font-medium">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
               <span>{lang === 'bn' ? 'নিরাপদ তথ্য এনক্রিপশন' : 'Encrypted & Fail-Closed Security'}</span>
             </span>
-            <span>&bull;</span>
+            <span className="hidden sm:inline">&bull;</span>
             <a
               href="mailto:support@attanjil.com"
-              className="hover:text-teal-300 transition flex items-center gap-1"
+              className="hover:text-teal-700 transition flex items-center gap-1 font-medium"
             >
               <span>support@attanjil.com</span>
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-3 h-3 text-slate-400" />
             </a>
           </div>
         </div>
@@ -627,4 +629,3 @@ export function RegisterPortal() {
     </div>
   );
 }
-
