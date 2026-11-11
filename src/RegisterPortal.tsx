@@ -154,8 +154,8 @@ export function RegisterPortal() {
         : 'The Intelligent Future of Bangla Voice Typing & Islamic Documents',
     subtitle:
       lang === 'bn'
-        ? 'মাইক্রোসফট ওয়ার্ডে সরাসরি রিয়েল-টাইম বাংলা ভয়েস টাইপিং, ৫০০+ প্রামাণ্য ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট এবং আধুনিক এআই বানান কারেক্টর — টাইপোম্যাটিক এর সাথে কাজ করুন সম্পূর্ণ নিশ্চিন্তে ও দ্রুততম গতিতে।'
-        : 'Continuous real-time Bangla voice-to-text directly in MS Word, 500+ authentic Arabic & Islamic calligraphy ligatures, and contextual AI spell correction — all in one unified desktop suite.',
+        ? 'মাইক্রোসফট ওয়ার্ডে সরাসরি রিয়েল-টাইম বাংলা ভয়েস টাইপিং, ৫০০+ প্রামাণ্য ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট এবং আধুনিক বানান ও বাক্য কারেক্টর — টাইপোম্যাটিক এর সাথে কাজ করুন সম্পূর্ণ নিশ্চিন্তে ও দ্রুততম গতিতে।'
+        : 'Continuous real-time Bangla voice-to-text directly in MS Word, 500+ authentic Arabic & Islamic calligraphy ligatures, and contextual spell and sentence correction — all in one unified desktop suite.',
     formHeader: lang === 'bn' ? 'রেজিস্ট্রেশন ও সাবস্ক্রিপশন ফরম' : 'Registration & Subscription Form',
     formNote:
       lang === 'bn'
@@ -222,7 +222,7 @@ export function RegisterPortal() {
       },
       {
         icon: Sparkles,
-        title: lang === 'bn' ? 'স্মার্ট এআই কারেক্টর' : 'Smart AI Corrector',
+        title: lang === 'bn' ? 'স্মার্ট বানান কারেক্টর' : 'Smart Spell Corrector',
         desc:
           lang === 'bn'
             ? 'প্রফেশনাল ডকুমেন্ট সম্পাদনায় বাংলা ব্যাকরণ ও বানান সংশোধন, যা আপনার লেখার মান বহুগুণ বাড়িয়ে তুলবে।'
@@ -269,7 +269,7 @@ export function RegisterPortal() {
           lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
           lang === 'bn' ? 'আনলিমিটেড বাংলা ভয়েস টাইপিং (এমএস ওয়ার্ড সিঙ্ক)' : 'Unlimited Word Voice Typing',
           lang === 'bn' ? '৫০০+ প্রামাণ্য ইসলামিক ক্যালিগ্রাফি শর্টকাট' : '500+ Authentic Islamic Shortcuts',
-          lang === 'bn' ? 'স্মার্ট এআই বানান ও ব্যাকরণ কারেক্টর' : 'Smart Contextual AI Spell Corrector',
+          lang === 'bn' ? 'স্মার্ট বাংলা বানান ও ব্যাকরণ কারেক্টর' : 'Smart Bangla Spell & Grammar Corrector',
           lang === 'bn' ? '১ বছরের প্রায়োরিটি ভিআইপি সাপোর্ট' : '1 Year Priority VIP Updates & Support',
           lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
         ],
@@ -277,13 +277,13 @@ export function RegisterPortal() {
     },
     fields: {
       fullName: lang === 'bn' ? 'আপনার পূর্ণ নাম' : 'Full Name',
-      fullNamePlaceholder: lang === 'bn' ? 'যেমন: মাওলানা আব্দুল্লাহ বা মোঃ রফিকুল ইসলাম' : 'e.g. Md. Abdullah or Rafiqul Islam',
+      fullNamePlaceholder: lang === 'bn' ? 'যেমন: মো: হাফিজুর রহমান' : 'e.g. Md. Hafizur Rahman',
       email: lang === 'bn' ? 'ইমেইল ঠিকানা' : 'Email Address',
       emailPlaceholder: lang === 'bn' ? 'name@example.com' : 'user@example.com',
       phone: lang === 'bn' ? 'মোবাইল / হোয়াটসঅ্যাপ নম্বর' : 'Phone / WhatsApp Number',
       phonePlaceholder: lang === 'bn' ? '+8801XXXXXXXXX' : '+8801712345678',
       company: lang === 'bn' ? 'প্রতিষ্ঠান / মাদ্রাসা / পেশা (ঐচ্ছিক)' : 'Institution / Madrashah / Profession (Optional)',
-      companyPlaceholder: lang === 'bn' ? 'যেমন: দারুল উলুম মাদ্রাসা বা দৈনিক পত্রিকা' : 'e.g. Darul Uloom / Daily Newspaper',
+      companyPlaceholder: lang === 'bn' ? 'যেমন: জামিয়া ইসলামিয়া মেহেরপুর' : 'e.g. Jamia Islamia Meherpur',
       division: lang === 'bn' ? 'বিভাগ' : 'Division',
       district: lang === 'bn' ? 'জেলা' : 'District',
       upazila: lang === 'bn' ? 'উপজেলা / থানা' : 'Upazila / Thana',
