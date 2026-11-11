@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Mic,
   Feather,
@@ -97,6 +97,14 @@ export function RegisterPortal() {
 
   // Honeypot field
   const [website, setWebsite] = useState('');
+
+  // Keep browser tab and link viewer title in sync with current language
+  useEffect(() => {
+    document.title =
+      lang === 'bn'
+        ? 'Typomatic — শুধু ভয়েস টাইপিং নয়, লেখালেখির সম্পূর্ণ স্মার্ট সমাধান! | HM Innovations'
+        : 'Typomatic — Not Just Voice Typing, Complete Smart Writing Suite! | HM Innovations';
+  }, [lang]);
 
   // Derived Geographic Options
   const currentDivision = useMemo(() => {
