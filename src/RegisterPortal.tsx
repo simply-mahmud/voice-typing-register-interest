@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Mic,
   Feather,
@@ -20,9 +20,19 @@ import {
   ExternalLink,
   Lock,
   CheckCheck,
+  CreditCard,
+  Smartphone,
+  Hash,
+  Send,
+  Calendar,
 } from 'lucide-react';
+import { BANGLADESH_DIVISIONS } from './data/bangladeshGeo';
 
 type Language = 'bn' | 'en';
+type PackageId = 'pkg_6m' | 'pkg_12m';
+type PaymentVerificationType = 'trx_id' | 'phone_digits';
+
+const DEMO_BKASH_NUMBER = '01700-000000';
 
 function getPublicApiUrl(): string {
   const envUrl = (import.meta as any).env?.VITE_CONTROL_API_ORIGIN;
@@ -39,19 +49,90 @@ export function RegisterPortal() {
   const [lang, setLang] = useState<Language>('bn');
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successData, setSuccessData] = useState<{ requestId: string; message: string } | null>(null);
+  const [successData, setSuccessData] = useState<{
+    requestId: string;
+    message: string;
+    packageId: PackageId;
+    paymentType: PaymentVerificationType;
+    refDetail: string;
+  } | null>(null);
   const [copiedId, setCopiedId] = useState(false);
+  const [copiedBkash, setCopiedBkash] = useState(false);
 
-  // Form Fields
+  // Form Fields - Step 1: Personal Info
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
-  const [location, setLocation] = useState('');
-  const [message, setMessage] = useState('');
+
+  // Form Fields - Step 2: Location
+  const [selectedDivision, setSelectedDivision] = useState('dhaka');
+  const [selectedDistrict, setSelectedDistrict] = useState('dhaka');
+  const [selectedUpazila, setSelectedUpazila] = useState('mirpur');
+  const [customUpazila, setCustomUpazila] = useState('');
+
+  // Form Fields - Step 3: Package
+  const [selectedPackage, setSelectedPackage] = useState<PackageId>('pkg_12m');
+
+  // Form Fields - Step 4: Payment
+  const [paymentVerificationType, setPaymentVerificationType] = useState<PaymentVerificationType>('trx_id');
+  const [transactionId, setTransactionId] = useState('');
+  const [senderLastDigits, setSenderLastDigits] = useState('');
+  const [paymentAmount, setPaymentAmount] = useState('4000');
+  const [userNote, setUserNote] = useState('');
   const [consent, setConsent] = useState(false);
+
   // Honeypot field
   const [website, setWebsite] = useState('');
+
+  // Derived Geographic Options
+  const currentDivision = useMemo(() => {
+    return BANGLADESH_DIVISIONS.find((d) => d.id === selectedDivision) || BANGLADESH_DIVISIONS[0];
+  }, [selectedDivision]);
+
+  const districtList = useMemo(() => {
+    return currentDivision.districts;
+  }, [currentDivision]);
+
+  const currentDistrict = useMemo(() => {
+    return districtList.find((d) => d.id === selectedDistrict) || districtList[0];
+  }, [districtList, selectedDistrict]);
+
+  const upazilaList = useMemo(() => {
+    return currentDistrict ? currentDistrict.upazilas : [];
+  }, [currentDistrict]);
+
+  // Handle Division change: cascade to first district and upazila
+  const handleDivisionChange = (divId: string) => {
+    setSelectedDivision(divId);
+    const divObj = BANGLADESH_DIVISIONS.find((d) => d.id === divId);
+    if (divObj && divObj.districts.length > 0) {
+      const firstDist = divObj.districts[0];
+      setSelectedDistrict(firstDist.id);
+      if (firstDist.upazilas.length > 0) {
+        setSelectedUpazila(firstDist.upazilas[0].id);
+      } else {
+        setSelectedUpazila('');
+      }
+    }
+  };
+
+  // Handle District change: cascade to first upazila
+  const handleDistrictChange = (distId: string) => {
+    setSelectedDistrict(distId);
+    const distObj = districtList.find((d) => d.id === distId);
+    if (distObj && distObj.upazilas.length > 0) {
+      setSelectedUpazila(distObj.upazilas[0].id);
+    } else {
+      setSelectedUpazila('');
+    }
+  };
+
+  // Sync payment amount when package changes
+  const handlePackageChange = (pkgId: PackageId) => {
+    setSelectedPackage(pkgId);
+    setPaymentAmount(pkgId === 'pkg_12m' ? '4000' : '2250');
+  };
 
   const t = {
     badge: lang === 'bn' ? 'এইচএম ইনোভেশনস • অফিশিয়াল আর্লি অ্যাক্সেস ও প্রি-রেজিস্ট্রেশন' : 'HM Innovations • Official Early Access & Pre-Registration',
@@ -63,11 +144,11 @@ export function RegisterPortal() {
       lang === 'bn'
         ? 'মাইক্রোসফট ওয়ার্ডে সরাসরি রিয়েল-টাইম বাংলা ভয়েস টাইপিং, ৫০০+ প্রামাণ্য ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট এবং আধুনিক এআই বানান কারেক্টর — টাইপোম্যাটিক এর সাথে কাজ করুন সম্পূর্ণ নিশ্চিন্তে ও দ্রুততম গতিতে।'
         : 'Continuous real-time Bangla voice-to-text directly in MS Word, 500+ authentic Arabic & Islamic calligraphy ligatures, and contextual AI spell correction — all in one unified desktop suite.',
-    formHeader: lang === 'bn' ? 'আর্লি অ্যাক্সেস নিবন্ধন ফরম' : 'Early Access Registration Form',
+    formHeader: lang === 'bn' ? 'রেজিস্ট্রেশন ও সাবস্ক্রিপশন ফরম' : 'Registration & Subscription Form',
     formNote:
       lang === 'bn'
-        ? 'গুরুত্বপূর্ণ বিজ্ঞপ্তি: এটি একটি গ্রাহক আগ্রহ নিবন্ধন পোর্টাল। এটি কোনো স্বয়ংক্রিয় সাধারণ অ্যাকাউন্ট নয়। আপনার আবেদনটি আমাদের অ্যাডমিন টিম পর্যালোচনা করে সরাসরি হোয়াটসঅ্যাপ বা ফোনে যোগাযোগ করবে।'
-        : 'Important: This is a customer interest inquiry form. It does not automatically provision an instant account. An authorized administrator will review your submission and contact you via WhatsApp or phone.',
+        ? 'গুরুত্বপূর্ণ বিজ্ঞপ্তি: আপনার আবেদন ও বিকাশ পেমেন্ট তথ্য সাবমিট করার পর আমাদের অ্যাডমিন টিম তা দ্রুত পর্যালোচনা করে আপনার সাথে হোয়াটসঅ্যাপ বা ফোনে যোগাযোগ করে সফটওয়্যার অ্যাক্টিভেশন কী বুঝিয়ে দেবে।'
+        : 'Important: Once submitted, our authorized administrative team verifies your bKash payment and reaches out via WhatsApp or phone with your official activation key and installation package.',
     metrics: [
       {
         value: '৯৯.২%',
@@ -144,6 +225,43 @@ export function RegisterPortal() {
             : 'Unbreakable cryptographic device binding and reliable offline typing resilience for uninterrupted workflow.',
       },
     ],
+    step1Title: lang === 'bn' ? '১. আপনার মৌলিক তথ্য' : '1. Personal Details',
+    step2Title: lang === 'bn' ? '২. আপনার অবস্থান ও জেলা/উপজেলা' : '2. Location & Address',
+    step3Title: lang === 'bn' ? '৩. প্যাকেজ নির্বাচন করুন' : '3. Choose Your Package',
+    step4Title: lang === 'bn' ? '৪. বিকাশ পেমেন্ট ও তথ্য নিশ্চিতকরণ' : '4. bKash Payment & Verification',
+    packages: {
+      pkg_6m: {
+        id: 'pkg_6m' as PackageId,
+        title: lang === 'bn' ? '৬ মাসের প্যাকেজ' : '6 Months Package',
+        duration: lang === 'bn' ? '৬ মাস মেয়াদী লাইসেন্স' : '6 Months Full License',
+        price: '2250',
+        priceDisplay: lang === 'bn' ? '২২৫০ টাকা' : '2,250 BDT',
+        features: [
+          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
+          lang === 'bn' ? 'বাংলা ভয়েস টাইপিং (উচ্চ নির্ভুলতা)' : 'High Accuracy Bangla Voice-to-Text',
+          lang === 'bn' ? '৫০০+ ইসলামিক ও আরবি ক্যালিগ্রাফি শর্টকাট' : '500+ Arabic & Islamic Ligatures',
+          lang === 'bn' ? '৬ মাসের ফ্রি আপডেট ও সাপোর্ট' : '6 Months Regular Updates & Support',
+          lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
+        ],
+      },
+      pkg_12m: {
+        id: 'pkg_12m' as PackageId,
+        title: lang === 'bn' ? '১২ মাসের প্যাকেজ (১ বছর)' : '12 Months (1 Year Package)',
+        duration: lang === 'bn' ? '১২ মাস / ১ বছর মেয়াদী লাইসেন্স' : '12 Months / 1 Year License',
+        price: '4000',
+        priceDisplay: lang === 'bn' ? '৪০০০ টাকা' : '4,000 BDT',
+        originalPrice: lang === 'bn' ? '৪৫০০ টাকা' : '4,500 BDT',
+        badge: lang === 'bn' ? 'সর্বোচ্চ সাশ্রয়ী • ৫০০ টাকা ছাড়' : 'Best Value • Save 500 BDT',
+        features: [
+          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
+          lang === 'bn' ? 'আনলিমিটেড বাংলা ভয়েস টাইপিং (এমএস ওয়ার্ড সিঙ্ক)' : 'Unlimited Word Voice Typing',
+          lang === 'bn' ? '৫০০+ প্রামাণ্য ইসলামিক ক্যালিগ্রাফি শর্টকাট' : '500+ Authentic Islamic Shortcuts',
+          lang === 'bn' ? 'স্মার্ট এআই বানান ও ব্যাকরণ কারেক্টর' : 'Smart Contextual AI Spell Corrector',
+          lang === 'bn' ? '১ বছরের প্রায়োরিটি ভিআইপি সাপোর্ট' : '1 Year Priority VIP Updates & Support',
+          lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
+        ],
+      },
+    },
     fields: {
       fullName: lang === 'bn' ? 'আপনার পূর্ণ নাম' : 'Full Name',
       fullNamePlaceholder: lang === 'bn' ? 'যেমন: মাওলানা আব্দুল্লাহ বা মোঃ রফিকুল ইসলাম' : 'e.g. Md. Abdullah or Rafiqul Islam',
@@ -151,42 +269,76 @@ export function RegisterPortal() {
       emailPlaceholder: lang === 'bn' ? 'name@example.com' : 'user@example.com',
       phone: lang === 'bn' ? 'মোবাইল / হোয়াটসঅ্যাপ নম্বর' : 'Phone / WhatsApp Number',
       phonePlaceholder: lang === 'bn' ? '+8801XXXXXXXXX' : '+8801712345678',
-      company: lang === 'bn' ? 'প্রতিষ্ঠান / মাদ্রাসা / প্রকাশনা (ঐচ্ছিক)' : 'Institution / Madrashah / Publishing (Optional)',
+      company: lang === 'bn' ? 'প্রতিষ্ঠান / মাদ্রাসা / পেশা (ঐচ্ছিক)' : 'Institution / Madrashah / Profession (Optional)',
       companyPlaceholder: lang === 'bn' ? 'যেমন: দারুল উলুম মাদ্রাসা বা দৈনিক পত্রিকা' : 'e.g. Darul Uloom / Daily Newspaper',
-      location: lang === 'bn' ? 'জেলা / শহর / অবস্থান (ঐচ্ছিক)' : 'District / City / Location (Optional)',
-      locationPlaceholder: lang === 'bn' ? 'যেমন: ঢাকা, চট্টগ্রাম, সিলেট ইত্যাদি' : 'e.g. Dhaka, Chittagong, Sylhet',
-      message: lang === 'bn' ? 'আপনার টাইপিং প্রয়োজন বা কোনো বিশেষ বার্তা (ঐচ্ছিক)' : 'Your Typing Workflow or Specific Needs (Optional)',
+      division: lang === 'bn' ? 'বিভাগ' : 'Division',
+      district: lang === 'bn' ? 'জেলা' : 'District',
+      upazila: lang === 'bn' ? 'উপজেলা / থানা' : 'Upazila / Thana',
+      customUpazilaPlaceholder: lang === 'bn' ? 'আপনার থানা বা এলাকার নাম লিখুন...' : 'Enter your specific upazila/thana name...',
+      bkashSendMoneyTitle: lang === 'bn' ? 'বিকাশ Send Money নির্দেশনা (Personal Account)' : 'bKash Send Money Guide (Personal)',
+      bkashNumberLabel: lang === 'bn' ? 'বিকাশ নম্বর (Send Money):' : 'bKash Number (Send Money):',
+      bkashCopy: lang === 'bn' ? 'নম্বর কপি করুন' : 'Copy Number',
+      bkashCopied: lang === 'bn' ? 'কপি হয়েছে' : 'Copied',
+      bkashStep1:
+        lang === 'bn'
+          ? 'আপনার বিকাশ অ্যাপ ওপেন করে "Send Money" নির্বাচন করুন।'
+          : 'Open your bKash App and tap on "Send Money".',
+      bkashStep2:
+        lang === 'bn'
+          ? `উপরের ডেমো বিকাশ নম্বরে নির্বাচিত প্যাকেজের টাকা পাঠান:`
+          : `Send the package fee to the demo bKash number above:`,
+      bkashStep3:
+        lang === 'bn'
+          ? 'টাকা পাঠানোর পর প্রাপ্ত ট্রানজেকশন আইডি (TrxID) দিন অথবা আপনার বিকাশ নম্বরের শেষ ৩ ডিজিট দিয়ে সাবমিট করুন।'
+          : 'After sending money, provide the Transaction ID (TrxID) or your bKash number last 3 digits below.',
+      verificationOptionA: lang === 'bn' ? 'আমার কাছে ট্রানজেকশন আইডি (TrxID) আছে' : 'I have a Transaction ID (TrxID)',
+      verificationOptionB: lang === 'bn' ? 'ট্রানজেকশন আইডি নেই / মনে নেই' : 'Don\'t have TrxID (Number & Amount)',
+      trxIdLabel: lang === 'bn' ? 'বিকাশ ট্রানজেকশন আইডি (TrxID)' : 'bKash Transaction ID (TrxID)',
+      trxIdPlaceholder: lang === 'bn' ? 'যেমন: BL83K9LPQ1' : 'e.g. BL83K9LPQ1',
+      lastDigitsLabel: lang === 'bn' ? 'বিকাশ নম্বরের শেষ ৩ ডিজিট' : 'Last 3 Digits of bKash Number',
+      lastDigitsPlaceholder: lang === 'bn' ? 'যেমন: 789' : 'e.g. 789',
+      amountSentLabel: lang === 'bn' ? 'প্রেরিত টাকার পরিমাণ (টাকা)' : 'Amount Sent (BDT)',
+      amountSentPlaceholder: lang === 'bn' ? 'যেমন: ২২৫০ বা ৪০০০' : 'e.g. 2250 or 4000',
+      message: lang === 'bn' ? 'অতিরিক্ত বার্তা বা কোনো বিশেষ প্রয়োজন (ঐচ্ছিক)' : 'Additional Message or Specific Notes (Optional)',
       messagePlaceholder:
         lang === 'bn'
-          ? 'প্রতিদিন কতটুকু লেখালেখি করেন বা আপনার কাজের ধরন সম্পর্কে সংক্ষিপ্তভাবে জানাতে পারেন...'
+          ? 'আপনার প্রতিদিনের টাইপিং প্রয়োজন বা সফটওয়্যার ব্যবহারের উদ্দেশ্য সম্পর্কে জানাতে পারেন...'
           : 'Briefly tell us about your daily typing workload or specific workflow needs...',
       consent:
         lang === 'bn'
-          ? 'আমি নিশ্চিত করছি যে প্রদত্ত তথ্য সঠিক এবং টাইপোম্যাটিক অ্যাডমিন টিমকে আমার সাথে যোগাযোগ ও সফটওয়্যার সংক্রান্ত তথ্য প্রদানের সম্মতি দিচ্ছি।'
-          : 'I confirm that the provided information is accurate and agree to be contacted by the Typomatic team for early access and setup.',
-      submit: lang === 'bn' ? 'আর্লি অ্যাক্সেসের জন্য আবেদন করুন' : 'Submit Early Access Request',
-      submitting: lang === 'bn' ? 'আবেদন জমা দেওয়া হচ্ছে...' : 'Submitting Application...',
+          ? 'আমি নিশ্চিত করছি যে প্রদত্ত তথ্য ও বিকাশ পেমেন্ট বিবরণ সঠিক এবং টাইপোম্যাটিক টিমকে আমার সাথে যোগাযোগ ও লাইসেন্স হস্তান্তরের সম্মতি দিচ্ছি।'
+          : 'I confirm that the provided information and bKash payment details are accurate and agree to be contacted for onboarding.',
+      submit: lang === 'bn' ? 'রেজিস্ট্রেশন ও পেমেন্ট তথ্য জমা দিন' : 'Submit Registration & Payment Details',
+      submitting: lang === 'bn' ? 'যাচাই ও জমা দেওয়া হচ্ছে...' : 'Verifying & Submitting...',
       privacyReassurance:
         lang === 'bn'
-          ? 'আপনার তথ্য ১০০% সুরক্ষিত • কোনো বাণিজ্যিক স্প্যাম নেই • অ্যাডমিন টিম সরাসরি যোগাযোগ করবে'
-          : '100% Data Confidentiality • Zero Spam • Direct Administrative Review',
+          ? 'আপনার তথ্য ১০০% সুরক্ষিত • কোনো গোপন চার্জ নেই • অ্যাডমিন টিম ভেরিফাই করে সরাসরি লাইসেন্স প্রদান করবে'
+          : '100% Data Confidentiality • No Hidden Charges • Direct Admin License Delivery',
     },
     success: {
-      title: lang === 'bn' ? 'আপনার আবেদন সফলভাবে গৃহীত হয়েছে!' : 'Application Submitted Successfully!',
+      title: lang === 'bn' ? 'আপনার আবেদন ও পেমেন্ট তথ্য সফলভাবে গৃহীত হয়েছে!' : 'Registration & Payment Details Received!',
       subtitle:
         lang === 'bn'
-          ? 'টাইপোম্যাটিক-এ আগ্রহ প্রকাশের জন্য আন্তরিক ধন্যবাদ। আপনার আবেদনটি আমাদের অ্যাডমিন রিভিউ কিউতে যুক্ত হয়েছে।'
-          : 'Thank you for expressing interest in Typomatic. Your request has been queued for administrative onboarding.',
-      status: lang === 'bn' ? 'স্ট্যাটাস: পর্যালোচনায় অপেক্ষমাণ (PENDING REVIEW)' : 'Status: Under Admin Review (PENDING REVIEW)',
+          ? 'টাইপোম্যাটিক-এ সাবস্ক্রাইব করার জন্য আন্তরিক ধন্যবাদ। আপনার পেমেন্ট ও তথ্য পর্যালোচনার জন্য অ্যাডমিন প্যানেলে তালিকাভুক্ত হয়েছে।'
+          : 'Thank you for choosing Typomatic. Your payment and registration have been logged for priority administrative onboarding.',
+      status: lang === 'bn' ? 'স্ট্যাটাস: পেমেন্ট ভেরিফিকেশন ও পর্যালোচনায় অপেক্ষমাণ (PENDING)' : 'Status: Under Admin Review & Verification (PENDING)',
       refId: lang === 'bn' ? 'আপনার ট্র্যাকিং রেফারেন্স আইডি:' : 'Your Tracking Reference ID:',
-      step1Title: lang === 'bn' ? '১. তথ্য ও রিকোয়ারমেন্ট যাচাইকরণ' : '1. Profile & Workflow Verification',
-      step1Desc: lang === 'bn' ? 'আমাদের টিম আপনার তথ্য ও ব্যবহারের উদ্দেশ্য পর্যবেক্ষণ করবে।' : 'Our team reviews your submission details and typing requirements.',
-      step2Title: lang === 'bn' ? '২. অ্যাডমিন সরাসরি যোগাযোগ' : '2. Administrative Outreach',
-      step2Desc: lang === 'bn' ? 'আবেদন অনুমোদনের পর হোয়াটসঅ্যাপ বা ফোনে আপনার সাথে যোগাযোগ করা হবে।' : 'Once reviewed, we will contact you via WhatsApp or phone to finalize setup.',
-      step3Title: lang === 'bn' ? '৩. ইনস্টলেশন ও ডেস্কটপ লাইসেন্স' : '3. Desktop License & Setup Guide',
-      step3Desc: lang === 'bn' ? 'আপনার মেশিনের জন্য সিকিউরড অ্যাক্টিভেশন কী ও ইনস্টলার গাইড হস্তান্তর করা হবে।' : 'Your hardware-bound license key and installer will be securely delivered.',
+      packageChosen: lang === 'bn' ? 'নির্বাচিত প্যাকেজ:' : 'Selected Package:',
+      paymentDetailsLabel: lang === 'bn' ? 'প্রদত্ত পেমেন্ট বিবরণ:' : 'Payment Verification Info:',
+      step1Title: lang === 'bn' ? '১. পেমেন্ট ও তথ্য ভেরিফিকেশন' : '1. bKash Payment & Info Verification',
+      step1Desc: lang === 'bn' ? 'আমাদের অ্যাডমিন টিম বিকাশ স্টেটমেন্টের সাথে আপনার তথ্য মিলিয়ে নেবে।' : 'Our admin team cross-checks your bKash transaction or phone digits with statement.',
+      step2Title: lang === 'bn' ? '২. সরাসরি হোয়াটসঅ্যাপ / ফোন যোগাযোগ' : '2. Administrative Outreach',
+      step2Desc: lang === 'bn' ? 'ভেরিফিকেশন সম্পন্ন হলে আপনার সাথে হোয়াটসঅ্যাপে সরাসরি যোগাযোগ করা হবে।' : 'Once verified, our team will message you directly on WhatsApp to confirm details.',
+      step3Title: lang === 'bn' ? '৩. ডেস্কটপ লাইসেন্স কি ও সেটআপ গাইড' : '3. Desktop License Key Delivery',
+      step3Desc: lang === 'bn' ? 'আপনার পিসির জন্য লাইসেন্স অ্যাক্টিভেশন কোড ও সফটওয়্যার সেটআপ গাইড বুঝিয়ে দেওয়া হবে।' : 'Your official hardware-bound license activation key will be securely delivered.',
       buttonReset: lang === 'bn' ? 'আরেকটি আবেদন জমা দিন' : 'Submit Another Request',
     },
+  };
+
+  const handleCopyBkash = () => {
+    navigator.clipboard.writeText(DEMO_BKASH_NUMBER.replace('-', ''));
+    setCopiedBkash(true);
+    setTimeout(() => setCopiedBkash(false), 2000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -208,6 +360,36 @@ export function RegisterPortal() {
       setErrorMessage(lang === 'bn' ? 'অনুগ্রহ করে আপনার সচল মোবাইল বা হোয়াটসঅ্যাপ নম্বর দিন।' : 'Please enter a valid phone or WhatsApp number (at least 6 digits).');
       return;
     }
+
+    // Payment validation
+    if (paymentVerificationType === 'trx_id') {
+      if (!transactionId.trim() || transactionId.trim().length < 4) {
+        setErrorMessage(
+          lang === 'bn'
+            ? 'অনুগ্রহ করে আপনার বিকাশ ট্রানজেকশন আইডি (TrxID) সঠিকভাবে লিখুন অথবা ট্রানজেকশন আইডি না থাকলে দ্বিতীয় অপশনটি নির্বাচন করুন।'
+            : 'Please enter a valid bKash Transaction ID (TrxID) or switch to the second option.'
+        );
+        return;
+      }
+    } else {
+      if (!senderLastDigits.trim() || senderLastDigits.trim().length !== 3 || !/^\d{3}$/.test(senderLastDigits.trim())) {
+        setErrorMessage(
+          lang === 'bn'
+            ? 'অনুগ্রহ করে আপনার বিকাশ নম্বরের শেষের সঠিক ৩টি ডিজিট লিখুন (যেমন: 789)।'
+            : 'Please enter the exact last 3 numeric digits of your bKash payment phone number.'
+        );
+        return;
+      }
+      if (!paymentAmount.trim() || isNaN(Number(paymentAmount.trim())) || Number(paymentAmount.trim()) <= 0) {
+        setErrorMessage(
+          lang === 'bn'
+            ? 'অনুগ্রহ করে প্রেরিত টাকার পরিমাণ সঠিকভাবে উল্লেখ করুন।'
+            : 'Please enter a valid payment amount.'
+        );
+        return;
+      }
+    }
+
     if (!consent) {
       setErrorMessage(lang === 'bn' ? 'আবেদন জমা দিতে সম্মতি বক্সে টিক দিন।' : 'Please accept the consent checkbox to continue.');
       return;
@@ -216,6 +398,44 @@ export function RegisterPortal() {
     setSubmitting(true);
 
     try {
+      // Build location string: Upazila, District, Division
+      const upazilaObj = upazilaList.find((u) => u.id === selectedUpazila);
+      const districtObj = currentDistrict;
+      const divisionObj = currentDivision;
+
+      const upazilaName =
+        selectedUpazila === 'other' && customUpazila.trim()
+          ? customUpazila.trim()
+          : upazilaObj?.nameBn || selectedUpazila;
+      const districtName = districtObj?.nameBn || selectedDistrict;
+      const divisionName = divisionObj?.nameBn || selectedDivision;
+
+      const formattedLocation = `${upazilaName}, ${districtName}, ${divisionName}`;
+
+      // Build payment summary
+      const packageLabel =
+        selectedPackage === 'pkg_12m'
+          ? '১২ মাসের প্যাকেজ (৪০০০ টাকা)'
+          : '৬ মাসের প্যাকেজ (২২৫০ টাকা)';
+
+      const paymentDetailText =
+        paymentVerificationType === 'trx_id'
+          ? `পদ্ধতি: TrxID | ট্রানজেকশন আইডি: ${transactionId.trim()}`
+          : `পদ্ধতি: নম্বরের শেষ ৩ ডিজিট | শেষ ৩ ডিজিট: ${senderLastDigits.trim()} | পরিমাণ: ${paymentAmount.trim()} টাকা`;
+
+      // Composite message stored cleanly in Appwrite
+      const compositeMessageLines = [
+        `[প্যাকেজ ও বিকাশ পেমেন্ট তথ্য]`,
+        `প্যাকেজ: ${packageLabel}`,
+        `পেমেন্ট মাধ্যম: বিকাশ Send Money (ব্যক্তিগত)`,
+        paymentDetailText,
+        `ঠিকানা: ${formattedLocation}`,
+        company.trim() ? `প্রতিষ্ঠান / পেশা: ${company.trim()}` : null,
+        userNote.trim() ? `গ্রাহকের নোট: ${userNote.trim()}` : null,
+      ].filter(Boolean);
+
+      const compositeMessage = compositeMessageLines.join('\n');
+
       const url = getPublicApiUrl();
       const response = await fetch(url, {
         method: 'POST',
@@ -228,9 +448,9 @@ export function RegisterPortal() {
           email: email.trim().toLowerCase(),
           phone: cleanPhone,
           company: company.trim(),
-          location: location.trim(),
-          interestType: 'full_suite', // Defaulted to full suite to maintain backend schema compatibility
-          message: message.trim(),
+          location: formattedLocation,
+          interestType: 'full_suite', // Safe default recognized by backend schema
+          message: compositeMessage,
           consent: true,
           website: website.trim(), // Honeypot field
         }),
@@ -245,6 +465,9 @@ export function RegisterPortal() {
       setSuccessData({
         requestId: data.requestId || `REQ-${Date.now()}`,
         message: data.message || '',
+        packageId: selectedPackage,
+        paymentType: paymentVerificationType,
+        refDetail: paymentVerificationType === 'trx_id' ? transactionId.trim() : `${senderLastDigits.trim()} (${paymentAmount.trim()} TK)`,
       });
     } catch (err: any) {
       console.error('Registration submission error:', err);
@@ -268,8 +491,16 @@ export function RegisterPortal() {
     setEmail('');
     setPhone('');
     setCompany('');
-    setLocation('');
-    setMessage('');
+    setSelectedDivision('dhaka');
+    setSelectedDistrict('dhaka');
+    setSelectedUpazila('mirpur');
+    setCustomUpazila('');
+    setSelectedPackage('pkg_12m');
+    setPaymentVerificationType('trx_id');
+    setTransactionId('');
+    setSenderLastDigits('');
+    setPaymentAmount('4000');
+    setUserNote('');
     setConsent(false);
     setWebsite('');
   };
@@ -299,7 +530,7 @@ export function RegisterPortal() {
               <div className="flex items-center gap-2">
                 <span className="text-base sm:text-xl font-black tracking-wider text-slate-950 truncate">TYPOMATIC</span>
                 <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-teal-50 text-teal-800 border border-teal-200/90">
-                  {lang === 'bn' ? 'আর্লি অ্যাক্সেস' : 'Early Access'}
+                  {lang === 'bn' ? 'আর্লি অ্যাক্সেস ও সাবস্ক্রিপশন' : 'Early Access & Subscription'}
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-slate-500 font-semibold truncate flex items-center gap-1.5">
@@ -408,7 +639,7 @@ export function RegisterPortal() {
         </div>
 
         {/* Application Form or Success Container */}
-        <div className="max-w-2xl mx-auto w-full">
+        <div className="max-w-3xl mx-auto w-full">
           {successData ? (
             /* Success Confirmation State */
             <div className="portal-card rounded-3xl p-6 sm:p-10 border border-emerald-200 bg-white shadow-xl shadow-emerald-500/5 animate-fade-in">
@@ -426,6 +657,29 @@ export function RegisterPortal() {
                 <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold">
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                   <span>{t.success.status}</span>
+                </div>
+              </div>
+
+              {/* Package & Payment Summary Pill */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                <div className="rounded-2xl bg-teal-50/70 border border-teal-200/90 p-4">
+                  <div className="text-[11px] font-bold text-teal-800 uppercase tracking-wider mb-1">
+                    {t.success.packageChosen}
+                  </div>
+                  <div className="text-sm font-black text-teal-950">
+                    {successData.packageId === 'pkg_12m'
+                      ? (lang === 'bn' ? '১২ মাসের প্যাকেজ (৪০০০ টাকা)' : '12 Months Package (4,000 BDT)')
+                      : (lang === 'bn' ? '৬ মাসের প্যাকেজ (২২৫০ টাকা)' : '6 Months Package (2,250 BDT)')}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-rose-50/70 border border-rose-200/90 p-4">
+                  <div className="text-[11px] font-bold text-rose-800 uppercase tracking-wider mb-1">
+                    {t.success.paymentDetailsLabel}
+                  </div>
+                  <div className="text-sm font-mono font-bold text-rose-950">
+                    {successData.refDetail}
+                  </div>
                 </div>
               </div>
 
@@ -504,14 +758,14 @@ export function RegisterPortal() {
             </div>
           ) : (
             /* Main Input Form */
-            <div className="portal-card rounded-3xl p-5 sm:p-8 md:p-9 border border-slate-200/90 bg-white shadow-xl shadow-slate-200/60">
-              <div className="mb-6 sm:mb-7">
+            <div className="portal-card rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200/90 bg-white shadow-xl shadow-slate-200/60">
+              <div className="mb-6 sm:mb-8">
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <h2 className="text-lg sm:text-2xl font-black text-slate-950">
                     {t.formHeader}
                   </h2>
                   <span className="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200/80">
-                    {lang === 'bn' ? 'ফ্রি প্রি-রেজিস্ট্রেশন' : 'Free Pre-Registration'}
+                    {lang === 'bn' ? 'সরাসরি প্রোভিশনিং' : 'Direct Provisioning'}
                   </span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-teal-50/80 border border-teal-200/90 text-teal-950 text-xs leading-relaxed flex items-start gap-2.5">
@@ -521,7 +775,7 @@ export function RegisterPortal() {
               </div>
 
               {errorMessage && (
-                <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs leading-relaxed flex items-start gap-2.5">
+                <div className="mb-6 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs leading-relaxed flex items-start gap-2.5 animate-shake">
                   <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p className="font-bold text-rose-800">{lang === 'bn' ? 'আবেদন জমায় সমস্যা' : 'Submission Error'}</p>
@@ -530,7 +784,7 @@ export function RegisterPortal() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4.5">
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                 {/* Honeypot field (hidden from legitimate humans) */}
                 <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
                   <label htmlFor="hp_website">Leave this field blank</label>
@@ -545,110 +799,540 @@ export function RegisterPortal() {
                   />
                 </div>
 
-                {/* Full Name & Phone Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                  {/* Full Name */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.fullName}</span>
-                      <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder={t.fields.fullNamePlaceholder}
-                      maxLength={128}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
+                {/* ---------------- STEP 1: PERSONAL INFORMATION ---------------- */}
+                <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
+                  <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
+                    <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      1
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {t.step1Title}
+                    </h3>
                   </div>
 
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.phone}</span>
-                      <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder={t.fields.phonePlaceholder}
-                      maxLength={32}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
+                  <div className="space-y-3.5 sm:space-y-4">
+                    {/* Full Name & Phone Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                      {/* Full Name */}
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-teal-700" />
+                          <span>{t.fields.fullName}</span>
+                          <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder={t.fields.fullNamePlaceholder}
+                          maxLength={128}
+                          className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                        />
+                      </div>
+
+                      {/* Phone */}
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                          <Phone className="w-3.5 h-3.5 text-teal-700" />
+                          <span>{t.fields.phone}</span>
+                          <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder={t.fields.phonePlaceholder}
+                          maxLength={32}
+                          className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email and Organization Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                          <Mail className="w-3.5 h-3.5 text-teal-700" />
+                          <span>{t.fields.email}</span>
+                          <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder={t.fields.emailPlaceholder}
+                          maxLength={256}
+                          className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                          <Building2 className="w-3.5 h-3.5 text-teal-700" />
+                          <span>{t.fields.company}</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={company}
+                          onChange={(e) => setCompany(e.target.value)}
+                          placeholder={t.fields.companyPlaceholder}
+                          maxLength={128}
+                          className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Email and Organization Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.email}</span>
-                      <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder={t.fields.emailPlaceholder}
-                      maxLength={256}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
+                {/* ---------------- STEP 2: LOCATION (DIVISION, DISTRICT, UPAZILA) ---------------- */}
+                <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
+                  <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
+                    <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      2
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {t.step2Title}
+                    </h3>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-teal-700" />
-                      <span>{t.fields.company}</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      placeholder={t.fields.companyPlaceholder}
-                      maxLength={128}
-                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+                    {/* Division */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-teal-700" />
+                        <span>{t.fields.division}</span>
+                        <span className="text-rose-500">*</span>
+                      </label>
+                      <select
+                        value={selectedDivision}
+                        onChange={(e) => handleDivisionChange(e.target.value)}
+                        className="w-full px-3 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition cursor-pointer shadow-xs"
+                      >
+                        {BANGLADESH_DIVISIONS.map((div) => (
+                          <option key={div.id} value={div.id}>
+                            {lang === 'bn' ? div.nameBn : div.nameEn}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* District */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-teal-700" />
+                        <span>{t.fields.district}</span>
+                        <span className="text-rose-500">*</span>
+                      </label>
+                      <select
+                        value={selectedDistrict}
+                        onChange={(e) => handleDistrictChange(e.target.value)}
+                        className="w-full px-3 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition cursor-pointer shadow-xs"
+                      >
+                        {districtList.map((dist) => (
+                          <option key={dist.id} value={dist.id}>
+                            {lang === 'bn' ? dist.nameBn : dist.nameEn}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Upazila */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-teal-700" />
+                        <span>{t.fields.upazila}</span>
+                        <span className="text-rose-500">*</span>
+                      </label>
+                      <select
+                        value={selectedUpazila}
+                        onChange={(e) => setSelectedUpazila(e.target.value)}
+                        className="w-full px-3 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition cursor-pointer shadow-xs"
+                      >
+                        {upazilaList.map((upz) => (
+                          <option key={upz.id} value={upz.id}>
+                            {lang === 'bn' ? upz.nameBn : upz.nameEn}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Custom Upazila text field if "other" is selected */}
+                  {selectedUpazila === 'other' && (
+                    <div className="mt-3.5 animate-fade-in">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        {lang === 'bn' ? 'নির্দিষ্ট থানা বা উপজেলার নাম' : 'Specific Upazila / Thana Name'}
+                        <span className="text-rose-500 ml-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={customUpazila}
+                        onChange={(e) => setCustomUpazila(e.target.value)}
+                        placeholder={t.fields.customUpazilaPlaceholder}
+                        maxLength={128}
+                        className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* ---------------- STEP 3: PACKAGE SELECTION ---------------- */}
+                <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
+                  <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
+                    <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      3
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {t.step3Title}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* 6 Months Package */}
+                    <div
+                      onClick={() => handlePackageChange('pkg_6m')}
+                      className={`relative rounded-2xl p-4 sm:p-5 border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                        selectedPackage === 'pkg_6m'
+                          ? 'border-teal-600 bg-white ring-4 ring-teal-500/10 shadow-md'
+                          : 'border-slate-200 bg-white/70 hover:border-slate-300 hover:bg-white'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                            {t.packages.pkg_6m.duration}
+                          </span>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+                              selectedPackage === 'pkg_6m'
+                                ? 'border-teal-600 bg-teal-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {selectedPackage === 'pkg_6m' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+
+                        <div className="text-2xl sm:text-3xl font-black text-slate-950 mb-1">
+                          {t.packages.pkg_6m.priceDisplay}
+                        </div>
+                        <p className="text-xs font-bold text-teal-800 mb-3">
+                          {t.packages.pkg_6m.title}
+                        </p>
+
+                        <div className="space-y-1.5 border-t border-slate-100 pt-3">
+                          {t.packages.pkg_6m.features.map((feat, i) => (
+                            <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
+                              <Check className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" />
+                              <span>{feat}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 12 Months Package (Featured / Best Value) */}
+                    <div
+                      onClick={() => handlePackageChange('pkg_12m')}
+                      className={`relative rounded-2xl p-4 sm:p-5 border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                        selectedPackage === 'pkg_12m'
+                          ? 'border-teal-600 bg-white ring-4 ring-teal-500/15 shadow-lg'
+                          : 'border-slate-200 bg-white/70 hover:border-slate-300 hover:bg-white'
+                      }`}
+                    >
+                      {/* Best Value Ribbon */}
+                      <div className="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-black tracking-wider uppercase shadow-sm">
+                        {t.packages.pkg_12m.badge}
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-xs font-bold text-teal-800 uppercase tracking-wider flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                            {t.packages.pkg_12m.duration}
+                          </span>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+                              selectedPackage === 'pkg_12m'
+                                ? 'border-teal-600 bg-teal-600 text-white'
+                                : 'border-slate-300 bg-white'
+                            }`}
+                          >
+                            {selectedPackage === 'pkg_12m' && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <span className="text-2xl sm:text-3xl font-black text-slate-950">
+                            {t.packages.pkg_12m.priceDisplay}
+                          </span>
+                          {t.packages.pkg_12m.originalPrice && (
+                            <span className="text-xs sm:text-sm text-slate-400 line-through font-semibold">
+                              {t.packages.pkg_12m.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs font-bold text-teal-800 mb-3">
+                          {t.packages.pkg_12m.title}
+                        </p>
+
+                        <div className="space-y-1.5 border-t border-slate-100 pt-3">
+                          {t.packages.pkg_12m.features.map((feat, i) => (
+                            <div key={i} className="flex items-start gap-2 text-xs text-slate-700 font-medium">
+                              <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                              <span>{feat}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Location */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-teal-700" />
-                    <span>{t.fields.location}</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder={t.fields.locationPlaceholder}
-                    maxLength={128}
-                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
-                  />
-                </div>
+                {/* ---------------- STEP 4: BKASH PAYMENT & VERIFICATION ---------------- */}
+                <div className="rounded-2xl border border-slate-200/90 p-4 sm:p-5 bg-slate-50/40">
+                  <div className="flex items-center gap-2 mb-3.5 sm:mb-4 pb-2 border-b border-slate-200">
+                    <div className="w-6 h-6 rounded-lg bg-teal-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      4
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {t.step4Title}
+                    </h3>
+                  </div>
 
-                {/* Message / Requirements */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <MessageSquare className="w-3.5 h-3.5 text-teal-700" />
-                    <span>{t.fields.message}</span>
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder={t.fields.messagePlaceholder}
-                    maxLength={2048}
-                    className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition resize-none shadow-xs"
-                  />
+                  {/* Demo bKash Send Money Instruction Box */}
+                  <div className="rounded-2xl border-2 border-rose-200 bg-gradient-to-br from-rose-50/90 via-white to-pink-50/80 p-4 sm:p-5 mb-5 shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 pb-3 border-b border-rose-200/80">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-xl bg-rose-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
+                          <Smartphone className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs sm:text-sm font-black text-rose-950">
+                            {t.fields.bkashSendMoneyTitle}
+                          </h4>
+                          <p className="text-[11px] text-rose-700 font-semibold">
+                            {lang === 'bn' ? 'ব্যক্তিগত বিকাশ নম্বর (Send Money প্রযোজ্য)' : 'Personal bKash Account (Send Money)'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* bKash Demo Number & Copy Pill */}
+                      <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-rose-300 shadow-2xs self-start sm:self-auto">
+                        <code className="text-sm sm:text-base font-mono font-black text-rose-700 select-all">
+                          {DEMO_BKASH_NUMBER}
+                        </code>
+                        <button
+                          type="button"
+                          onClick={handleCopyBkash}
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition cursor-pointer"
+                        >
+                          {copiedBkash ? (
+                            <>
+                              <Check className="w-3 h-3 text-emerald-600" />
+                              <span className="text-emerald-700">{t.fields.bkashCopied}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>{t.fields.bkashCopy}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Step-by-Step bullets */}
+                    <div className="space-y-2 text-xs text-rose-950">
+                      <div className="flex items-start gap-2">
+                        <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                          1
+                        </span>
+                        <span>{t.fields.bkashStep1}</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                          2
+                        </span>
+                        <span>
+                          {t.fields.bkashStep2}{' '}
+                          <strong className="text-rose-700 underline underline-offset-2">
+                            {selectedPackage === 'pkg_12m' ? '৪০০০ টাকা' : '২২৫০ টাকা'}
+                          </strong>
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="w-4 h-4 rounded-full bg-rose-200/90 text-rose-800 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                          3
+                        </span>
+                        <span>{t.fields.bkashStep3}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Two Payment Verification Options (Tabs) */}
+                  <div className="mb-4">
+                    <label className="block text-xs font-bold text-slate-700 mb-2">
+                      {lang === 'bn' ? 'পেমেন্ট যাচাইয়ের পদ্ধতি নির্বাচন করুন:' : 'Choose Payment Verification Method:'}
+                    </label>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3.5">
+                      {/* Option 1: TrxID */}
+                      <button
+                        type="button"
+                        onClick={() => setPaymentVerificationType('trx_id')}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left transition cursor-pointer ${
+                          paymentVerificationType === 'trx_id'
+                            ? 'border-teal-600 bg-white ring-2 ring-teal-500/10 shadow-xs'
+                            : 'border-slate-200 bg-white/70 hover:bg-white text-slate-600'
+                        }`}
+                      >
+                        <div
+                          className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                            paymentVerificationType === 'trx_id'
+                              ? 'border-teal-600 bg-teal-600 text-white'
+                              : 'border-slate-300'
+                          }`}
+                        >
+                          {paymentVerificationType === 'trx_id' && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-slate-900 leading-tight">
+                            {t.fields.verificationOptionA}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">
+                            {lang === 'bn' ? 'এসএমএস থেকে TrxID দিন' : 'Paste transaction ID from SMS'}
+                          </p>
+                        </div>
+                      </button>
+
+                      {/* Option 2: Last 3 Digits + Amount */}
+                      <button
+                        type="button"
+                        onClick={() => setPaymentVerificationType('phone_digits')}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left transition cursor-pointer ${
+                          paymentVerificationType === 'phone_digits'
+                            ? 'border-teal-600 bg-white ring-2 ring-teal-500/10 shadow-xs'
+                            : 'border-slate-200 bg-white/70 hover:bg-white text-slate-600'
+                        }`}
+                      >
+                        <div
+                          className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                            paymentVerificationType === 'phone_digits'
+                              ? 'border-teal-600 bg-teal-600 text-white'
+                              : 'border-slate-300'
+                          }`}
+                        >
+                          {paymentVerificationType === 'phone_digits' && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-slate-900 leading-tight">
+                            {t.fields.verificationOptionB}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">
+                            {lang === 'bn' ? 'নম্বরের শেষ ৩ ডিজিট ও পরিমাণ' : 'Last 3 digits & amount sent'}
+                          </p>
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Dynamic Verification Input Fields */}
+                    {paymentVerificationType === 'trx_id' ? (
+                      /* Option A Input: TrxID */
+                      <div className="bg-white rounded-xl p-3.5 border border-slate-300 shadow-2xs animate-fade-in">
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                          <CreditCard className="w-3.5 h-3.5 text-teal-700" />
+                          <span>{t.fields.trxIdLabel}</span>
+                          <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required={paymentVerificationType === 'trx_id'}
+                          value={transactionId}
+                          onChange={(e) => setTransactionId(e.target.value.toUpperCase())}
+                          placeholder={t.fields.trxIdPlaceholder}
+                          maxLength={32}
+                          className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 font-mono text-sm uppercase tracking-wider focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                        />
+                        <p className="text-[10px] text-slate-500 mt-1">
+                          {lang === 'bn'
+                            ? 'বিকাশের কনফার্মেশন মেসেজে থাকা ৮-১০ অক্ষরের ট্রানজেকশন আইডিটি এখানে লিখুন।'
+                            : 'Enter the 8-10 character Transaction ID from your bKash SMS.'}
+                        </p>
+                      </div>
+                    ) : (
+                      /* Option B Input: Last 3 Digits + Amount */
+                      <div className="bg-white rounded-xl p-3.5 border border-slate-300 shadow-2xs space-y-3 animate-fade-in">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {/* Last 3 digits */}
+                          <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                              <Hash className="w-3.5 h-3.5 text-teal-700" />
+                              <span>{t.fields.lastDigitsLabel}</span>
+                              <span className="text-rose-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              required={paymentVerificationType === 'phone_digits'}
+                              value={senderLastDigits}
+                              onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 3);
+                                setSenderLastDigits(val);
+                              }}
+                              placeholder={t.fields.lastDigitsPlaceholder}
+                              maxLength={3}
+                              className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 font-mono text-sm tracking-widest focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                            />
+                            <p className="text-[10px] text-slate-500 mt-1">
+                              {lang === 'bn' ? 'যে বিকাশ নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৩ সংখ্যা।' : 'Last 3 digits of sender phone.'}
+                            </p>
+                          </div>
+
+                          {/* Amount Sent */}
+                          <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                              <Send className="w-3.5 h-3.5 text-teal-700" />
+                              <span>{t.fields.amountSentLabel}</span>
+                              <span className="text-rose-500">*</span>
+                            </label>
+                            <input
+                              type="number"
+                              required={paymentVerificationType === 'phone_digits'}
+                              value={paymentAmount}
+                              onChange={(e) => setPaymentAmount(e.target.value)}
+                              placeholder={t.fields.amountSentPlaceholder}
+                              min={1}
+                              className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-300 text-slate-900 placeholder-slate-400 font-mono text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition shadow-xs"
+                            />
+                            <p className="text-[10px] text-slate-500 mt-1">
+                              {lang === 'bn' ? 'নির্বাচিত প্যাকেজের নির্ধারিত সমপরিমাণ টাকা।' : 'Exact amount sent in BDT.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Optional User Message */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                      <MessageSquare className="w-3.5 h-3.5 text-teal-700" />
+                      <span>{t.fields.message}</span>
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={userNote}
+                      onChange={(e) => setUserNote(e.target.value)}
+                      placeholder={t.fields.messagePlaceholder}
+                      maxLength={1024}
+                      className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-teal-600 focus:ring-4 focus:ring-teal-100 transition resize-none shadow-xs"
+                    />
+                  </div>
                 </div>
 
                 {/* Consent Checkbox */}
@@ -672,7 +1356,7 @@ export function RegisterPortal() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 active:from-teal-900 active:to-emerald-900 text-white font-bold text-sm sm:text-base shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-700 via-teal-800 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 active:from-teal-900 active:to-emerald-900 text-white font-black text-sm sm:text-base shadow-xl shadow-teal-700/25 flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {submitting ? (
                       <>
