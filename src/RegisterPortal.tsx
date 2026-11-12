@@ -298,36 +298,36 @@ export function RegisterPortal() {
         : 'Important: Once submitted, our authorized administrative team verifies your bKash payment and reaches out via WhatsApp or phone with your official activation key and installation package.',
     metrics: [
       {
-        value: 'আনলিমিটেড',
-        valueEn: 'Unlimited',
-        labelBn: 'ভয়েস টাইপিং ও কমান্ড',
-        labelEn: 'Voice Typing & Commands',
-        descBn: 'সীমাহীন ভয়েস টেক্সট ও দ্রুত ফরম্যাটিং',
-        descEn: 'Continuous speech & instant formatting',
-      },
-      {
-        value: '১-ক্লিকে',
-        valueEn: '1-Click',
-        labelBn: 'স্বয়ংক্রিয় বানান সংশোধন',
-        labelEn: 'Auto Correction',
-        descBn: 'টাইপিং ভুল ও অসংগতি নিমিষেই দূর',
-        descEn: 'Fix typographical errors instantly',
-      },
-      {
         value: '৫টি ভাষা',
         valueEn: '5 Languages',
-        labelBn: 'স্মার্ট ফন্ট কন্ট্রোল',
-        labelEn: 'Smart Font Control',
+        labelBn: 'ভয়েস টাইপিং ডিকটেশন',
+        labelEn: 'Voice Typing Dictation',
         descBn: 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি',
         descEn: 'Bengali, Arabic, English, Urdu & Persian',
       },
       {
+        value: '১-ক্লিকে',
+        valueEn: '1-Click',
+        labelBn: 'বানান ও প্রুফরিডার (F9)',
+        labelEn: 'Auto Corrector (F9)',
+        descBn: 'MS Word-এ বানান ও যতিচিহ্ন সংশোধন',
+        descEn: 'Instant spelling & grammar fix in Word',
+      },
+      {
+        value: '৩৯টি',
+        valueEn: '39',
+        labelBn: 'আরবি ক্যালিগ্রাফি শর্টকাট',
+        labelEn: 'Arabic Snippet Triggers',
+        descBn: '২২টি বিশুদ্ধ দরূদ, দো\'আ ও সম্মানসূচক বাক্য',
+        descEn: '22 authentic Durood & Islamic honorifics',
+      },
+      {
         value: '১০০%',
         valueEn: '100%',
-        labelBn: 'নিরাপদ ডিভাইস বাইন্ডিং',
-        labelEn: 'Hardware Security',
-        descBn: 'এনক্রিপ্টেড সেশন ও ডেটা প্রাইভেসি',
-        descEn: 'Fail-closed single-device session',
+        labelBn: 'অফলাইন ও ডিভাইস সুরক্ষা',
+        labelEn: 'Offline Privacy & Security',
+        descBn: '১টি পিসির জন্য হার্ডওয়্যার-বাউন্ড লাইসেন্স',
+        descEn: 'Fail-closed single-device hardware key',
       },
     ],
     languagesList: [
@@ -335,60 +335,60 @@ export function RegisterPortal() {
       { label: 'العربية', sub: 'Arabic' },
       { label: 'English', sub: 'English' },
       { label: 'اردو', sub: 'Urdu' },
-      { label: 'فارسی', sub: 'Persian' },
+      { label: 'فারسی', sub: 'Persian' },
     ],
     features: [
       {
         icon: Mic,
-        badgeBn: 'ভয়েস ও কমান্ড',
-        badgeEn: 'Voice & Commands',
+        badgeBn: '৫টি ভাষা • F4/F8/F12',
+        badgeEn: '5 Languages • F4/F8/F12',
         title:
           lang === 'bn'
-            ? '১. Unlimited Voice Typing & Voice Commands'
-            : '1. Unlimited Voice Typing & Voice Commands',
+            ? '১. ভয়েস টাইপিং (Voice Typing Anywhere)'
+            : '1. Voice Typing Anywhere',
         desc:
           lang === 'bn'
-            ? 'কোনো সীমাবদ্ধতা ছাড়াই ভয়েসের মাধ্যমে দ্রুত লিখুন। ভয়েস কমান্ড ব্যবহার করে লেখার প্রয়োজনীয় ফরম্যাটিং ও কমান্ড দিন এক নিমিষেই।'
-            : 'Speak and write rapidly without any restrictions. Use intuitive voice commands to format, structure, and control text instantaneously.',
+            ? 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ভাষায় সরাসরি মাইক্রোফোন দিয়ে যেকোনো উইন্ডোজ অ্যাপ্লিকেশনে (Word, Excel, Notepad, Browser) দ্রুত ও নির্ভুল টাইপিং।'
+            : 'Instant high-accuracy voice dictation directly into any Windows app (Word, Excel, Notepad, Browser) in Bengali, Arabic, English, Urdu & Persian.',
       },
       {
-        icon: CheckCheck,
-        badgeBn: '১-ক্লিকে সংশোধন',
-        badgeEn: '1-Click Fix',
+        icon: Sparkles,
+        badgeBn: '১-ক্লিক প্রুফরিডার • F9',
+        badgeEn: '1-Click Proofreader • F9',
         title:
           lang === 'bn'
-            ? '২. One-Click Auto Correction'
-            : '2. One-Click Auto Correction',
+            ? '২. স্মার্ট বানান ও প্রুফরিডার (Smart Corrector)'
+            : '2. Smart Corrector',
         desc:
           lang === 'bn'
-            ? 'ভয়েস টাইপিংয়ের সাধারণ বানান ভুল ও অসংগতি দূর করুন মাত্র এক ক্লিকে।'
-            : 'Eliminate voice typing typographical errors, phonetic slips, and syntax discrepancies with just a single click.',
+            ? 'মাইক্রোসফট ওয়ার্ড ও এক্সেলে ১-ক্লিকে স্বয়ংক্রিয় বানান ও যতিচিহ্ন সংশোধন। টাইপিং ভুল ও অসঙ্গতি নিমিষেই দূর করুন।'
+            : '1-Click high-speed document spell and grammar proofreading directly inside MS Word and Excel.',
       },
       {
         icon: Languages,
-        badgeBn: 'বহুভাষিক ফন্ট',
-        badgeEn: 'Multilingual Font',
+        badgeBn: 'ইউনিকোড অটো-ফন্ট',
+        badgeEn: 'Unicode Auto-Font',
         title:
           lang === 'bn'
-            ? '৩. Smart Font Control'
-            : '3. Smart Font Control',
+            ? '৩. স্মার্ট ফন্ট সিলেক্টর (Smart Font Selector)'
+            : '3. Smart Font Selector',
         desc:
           lang === 'bn'
-            ? 'একই ফাইলে বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ভাষা ব্যবহার করুন নির্বিঘ্নে - ফন্ট পরিবর্তনের কোনো বাড়তি ঝামেলা ছাড়াই।'
-            : 'Seamlessly write Bengali, Arabic, English, Urdu, and Persian in the same file without the hassle of manual font switching.',
+            ? 'বাংলা, আরবি, ইংরেজি ও উর্দু লেখার জন্য আলাদা আলাদা ইউনিকোড ফন্ট অটো-প্রয়োগ। একই ডকুমেন্টে বিভিন্ন ভাষার জন্য সঠিক ফন্ট স্বয়ংক্রিয়ভাবে সেট হয়ে যায়।'
+            : 'Auto-format Word and Excel documents with distinct native Unicode fonts per language without manual font switching.',
       },
       {
         icon: Feather,
-        badgeBn: 'ক্যালিগ্রাফি শর্টকাট',
-        badgeEn: 'Calligraphy Shortcuts',
+        badgeBn: '২২টি দো\'আ ও দরূদ • ৩৯টি শর্টকাট',
+        badgeEn: '22 Duas & Durood • 39 Shortcuts',
         title:
           lang === 'bn'
-            ? '৪. Quick Arabic Shortcuts'
-            : '4. Quick Arabic Shortcuts',
+            ? '৪. আরবি ক্যালিগ্রাফি শর্টকাট (Smart Arabic Snippets)'
+            : '4. Smart Arabic Snippets',
         desc:
           lang === 'bn'
-            ? 'প্রয়োজনীয় আরবি শব্দ, বহুল ব্যবহৃত বাক্যাংশ ও নান্দনিক ক্যালিগ্রাফিক টেক্সটগুলো ডকুমেন্টে যুক্ত করুন তাৎক্ষণিকভাবে।'
-            : 'Insert essential Arabic words, frequently used religious phrases, and authentic calligraphic ligatures into documents instantly.',
+            ? 'দরূদ, দো\'আ ও কুরআনিক বাক্য বিশুদ্ধ এরাবিক ক্যালিগ্রাফিক চিহ্নে তাৎক্ষণিক ইনসার্ট। বাংলা ও ইংরেজি উভয় কিবোর্ডেই দ্রুত শর্টকাট ট্রিগার সাপোর্ট।'
+            : 'Calligraphic Islamic honorifics, Durood & Quranic phrases with authentic typography retention via rapid Bengali & English shortcut triggers.',
       },
     ],
     step1Title: lang === 'bn' ? '১. আপনার মৌলিক তথ্য' : '1. Personal Details',
@@ -404,13 +404,13 @@ export function RegisterPortal() {
         price: '2250',
         priceDisplay: lang === 'bn' ? '২২৫০ টাকা' : '2,250 BDT',
         features: [
-          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
-          lang === 'bn' ? 'আনলিমিটেড ভয়েস টাইপিং ও ভয়েস কমান্ড' : 'Unlimited Voice Typing & Commands',
-          lang === 'bn' ? 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ফন্ট কন্ট্রোল' : '5-Language Font Control',
-          lang === 'bn' ? 'ওয়ান-ক্লিক অটো কারেকশন সুবিধা' : 'One-Click Auto Correction',
-          lang === 'bn' ? 'কুইক আরবি ও ইসলামিক ক্যালিগ্রাফি শর্টকাট' : 'Quick Arabic Calligraphy Shortcuts',
-          lang === 'bn' ? '৬ মাসের ফ্রি আপডেট ও সাপোর্ট' : '6 Months Regular Updates & Support',
-          lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
+          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স (৬ মাস অ্যাক্সেস)' : 'Full Typomatic Pro Suite Access (6 Months License)',
+          lang === 'bn' ? '৫ ভাষায় ভয়েস টাইপিং (বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি)' : '5-Language Voice Typing (Bengali, Arabic, English, Urdu & Persian)',
+          lang === 'bn' ? 'MS Word ও Excel-এ ১-ক্লিকে বানান ও যতিচিহ্ন সংশোধন (F9)' : '1-Click Spell & Punctuation Corrector in MS Word & Excel (F9)',
+          lang === 'bn' ? '২২টি প্রামাণ্য আরবি ক্যালিগ্রাফিক দরূদ ও দো\'আ (৩৯টি শর্টকাট)' : '22 Authentic Arabic Calligraphy Snippets (39 Triggers)',
+          lang === 'bn' ? 'স্মার্ট ইউনিকোড ফন্ট সিলেক্টর ও বহুভাষিক অটো-ফরম্যাটিং' : 'Smart Unicode Multilingual Font Selector & Auto-Formatter',
+          lang === 'bn' ? '১টি নির্দিষ্ট পিসির জন্য অফলাইন-সুরক্ষিত লাইসেন্স কি' : '100% Offline-Safe & Hardware-Bound License Key for 1 PC',
+          lang === 'bn' ? '৬ মাসের ফ্রি সফটওয়্যার আপডেট ও নিয়মিত টেকনিক্যাল সাপোর্ট' : '6 Months Regular Updates & Technical Support',
         ],
       },
       pkg_12m: {
@@ -422,13 +422,13 @@ export function RegisterPortal() {
         originalPrice: lang === 'bn' ? '৪৫০০ টাকা' : '4,500 BDT',
         badge: lang === 'bn' ? 'সর্বোচ্চ সাশ্রয়ী • ৫০০ টাকা ছাড়' : 'Best Value • Save 500 BDT',
         features: [
-          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স' : 'Full Typomatic Pro Suite Access',
-          lang === 'bn' ? 'আনলিমিটেড ভয়েস টাইপিং ও অ্যাডভান্সড ভয়েস কমান্ড' : 'Unlimited Voice Typing & Commands',
-          lang === 'bn' ? 'বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি ফুল ফন্ট সাপোর্ট' : 'Full 5-Language Font Support',
-          lang === 'bn' ? 'স্মার্ট ওয়ান-ক্লিক অটো কারেকশন' : 'One-Click Auto Correction',
-          lang === 'bn' ? '৫০০+ প্রামাণ্য আরবি ক্যালিগ্রাফি ও দরুদ শর্টকাট' : '500+ Arabic Calligraphy Shortcuts',
-          lang === 'bn' ? '১ বছরের সার্বক্ষণিক প্রায়োরিটি ভিআইপি সাপোর্ট' : '1 Year Priority VIP Updates & Support',
-          lang === 'bn' ? '১টি পিসির জন্য লাইসেন্স কি' : 'Single PC License Activation',
+          lang === 'bn' ? 'সম্পূর্ণ টাইপোম্যাটিক প্রো লাইসেন্স (১ বছর পূর্ণ মেয়াদী)' : 'Full Typomatic Pro Suite Access (1 Year Full License)',
+          lang === 'bn' ? '৫ ভাষায় আনলিমিটেড ভয়েস টাইপিং (বাংলা, আরবি, ইংরেজি, উর্দু ও ফার্সি)' : 'Unlimited 5-Language Voice Typing (Bengali, Arabic, English, Urdu & Persian)',
+          lang === 'bn' ? 'MS Word ও Excel-এ ১-ক্লিকে বানান ও যতিচিহ্ন সংশোধন (F9)' : '1-Click Spell & Punctuation Corrector in MS Word & Excel (F9)',
+          lang === 'bn' ? '২২টি প্রামাণ্য আরবি ক্যালিগ্রাফিক দরূদ ও দো\'আ (৩৯টি শর্টকাট)' : '22 Authentic Arabic Calligraphy Snippets (39 Triggers)',
+          lang === 'bn' ? 'স্মার্ট ইউনিকোড ফন্ট সিলেক্টর ও বহুভাষিক অটো-ফরম্যাটিং' : 'Smart Unicode Multilingual Font Selector & Auto-Formatter',
+          lang === 'bn' ? '১টি নির্দিষ্ট পিসির জন্য অফলাইন-সুরক্ষিত লাইসেন্স কি' : '100% Offline-Safe & Hardware-Bound License Key for 1 PC',
+          lang === 'bn' ? '১ বছরের সার্বক্ষণিক প্রায়োরিটি ভিআইপি সাপোর্ট ও ফ্রি আপগ্রেড' : '1 Year Priority VIP Updates, Upgrades & Dedicated Support',
         ],
       },
     },
