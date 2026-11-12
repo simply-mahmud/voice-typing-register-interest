@@ -12,8 +12,9 @@
 }
 
 /* 
- * 2. Kalpurush: scoped to Bengali alphabet, matras, halant, and punctuation (Danda, comma, exclamation, question mark).
- * CRITICAL: unicode-range prevents Kalpurush's dated serif Latin glyphs from hijacking English words.
+ * 2. Kalpurush: scoped strictly to Bengali alphabet, matras, halant, and Bengali Danda (। and ॥).
+ * Punctuation like comma (,), exclamation (!), question mark (?), quotes, etc. cleanly use 
+ * Inter / Hind Siliguri which feature native high-precision bold vectors without faux-bold blotches.
  */
 @font-face {
   font-family: 'Kalpurush';
@@ -21,7 +22,7 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0021, U+002C, U+003F, U+0964-0965, U+0980-09FF; /* Bangla script & punctuation */
+  unicode-range: U+0964-0965, U+0980-09FF; /* Bangla script & Bengali punctuation (Dari/Danda) ONLY */
 }
 
 @theme {
@@ -146,23 +147,44 @@
   vertical-align: baseline;
 }
 
-/* Refined Bengali Title Punctuation (Comma & Exclamation) */
+/* Refined Bengali Title Punctuation (Light Theme Headlines) */
 .title-punct-comma {
-  font-family: "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", sans-serif !important;
-  font-weight: 600 !important;
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
+  font-weight: 700 !important;
   color: #334155;
   margin-right: 0.16em;
   display: inline-block;
   vertical-align: baseline;
-  transform: scale(0.88);
+  transform: scale(0.92);
 }
 
 .title-punct-excl {
-  font-family: "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", sans-serif !important;
-  font-weight: 700 !important;
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
+  font-weight: 800 !important;
   color: #0d9488;
   margin-left: 0.12em;
   display: inline-block;
   vertical-align: baseline;
+  transform: scale(0.95);
+}
+
+/* Refined Bengali Banner Callout Punctuation (Dark Gradient Callout Box) */
+.banner-punct-comma {
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
+  font-weight: 700 !important;
+  color: #f1f5f9;
+  margin-right: 0.16em;
+  display: inline-block;
+  vertical-align: baseline;
   transform: scale(0.92);
+}
+
+.banner-punct-excl {
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
+  font-weight: 800 !important;
+  color: #2dd4bf; /* Vibrant glowing teal accent matching ✨ স্মার্ট সমাধান badge */
+  margin-left: 0.14em;
+  display: inline-block;
+  vertical-align: baseline;
+  transform: scale(0.95);
 }

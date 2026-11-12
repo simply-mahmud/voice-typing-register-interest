@@ -39,7 +39,7 @@ type PaymentVerificationType = 'trx_id' | 'phone_digits';
 type WindowsVersion = 'win11' | 'win10' | 'win7' | '';
 type WifiStatus = 'yes' | 'no' | '';
 
-const DEMO_BKASH_NUMBER = '01700-000000';
+const DEMO_BKASH_NUMBER = (import.meta as any).env?.VITE_BKASH_NUMBER || '01700-000000';
 
 function getPublicApiUrl(): string {
   const envUrl = (import.meta as any).env?.VITE_CONTROL_API_ORIGIN;
@@ -197,6 +197,9 @@ export function RegisterPortal() {
       lang === 'bn'
         ? 'Typomatic — শুধু ভয়েস টাইপিং নয়, লেখালেখির সম্পূর্ণ স্মার্ট সমাধান! | HM Innovations'
         : 'Typomatic — Not Just Voice Typing, Complete Smart Writing Suite! | HM Innovations';
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.lang = lang;
+    }
   }, [lang]);
 
   // Derived Geographic Options
@@ -883,7 +886,13 @@ export function RegisterPortal() {
                 <span>{lang === 'bn' ? 'স্মার্ট সমাধান' : 'Smart Writing Experience'}</span>
               </div>
               <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight mb-2 text-white">
-                {t.hookTitle}
+                {lang === 'bn' ? (
+                  <>
+                    লেখালেখি হোক আরও সহজ<span className="banner-punct-comma">,</span> দ্রুত ও নির্ভুল<span className="banner-punct-excl">!</span>
+                  </>
+                ) : (
+                  t.hookTitle
+                )}
               </h3>
               <p className="text-xs sm:text-sm md:text-base text-slate-300 font-normal leading-relaxed">
                 {t.hookSubtitle}
@@ -902,7 +911,13 @@ export function RegisterPortal() {
                   <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 mb-2">
-                  {t.success.title}
+                  {lang === 'bn' ? (
+                    <>
+                      আপনার আবেদন ও পেমেন্ট তথ্য সফলভাবে গৃহীত হয়েছে<span className="title-punct-excl">!</span>
+                    </>
+                  ) : (
+                    t.success.title
+                  )}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">
                   {t.success.subtitle}
