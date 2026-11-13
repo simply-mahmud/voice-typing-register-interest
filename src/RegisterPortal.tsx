@@ -331,11 +331,11 @@ export function RegisterPortal() {
       },
     ],
     languagesList: [
-      { label: 'বাংলা', sub: 'Bengali' },
-      { label: 'العربية', sub: 'Arabic' },
-      { label: 'English', sub: 'English' },
-      { label: 'اردو', sub: 'Urdu' },
-      { label: 'فারسی', sub: 'Persian' },
+      { label: 'বাংলা', sub: lang === 'bn' ? 'বাংলা' : 'Bengali', dir: 'ltr' as const },
+      { label: 'العربية', sub: lang === 'bn' ? 'আরবি' : 'Arabic', dir: 'rtl' as const },
+      { label: 'English', sub: lang === 'bn' ? 'ইংরেজি' : 'English', dir: 'ltr' as const },
+      { label: 'اردو', sub: lang === 'bn' ? 'উর্দু' : 'Urdu', dir: 'rtl' as const },
+      { label: 'فارسی', sub: lang === 'bn' ? 'ফার্সি' : 'Persian', dir: 'rtl' as const },
     ],
     features: [
       {
@@ -826,8 +826,10 @@ export function RegisterPortal() {
                 key={idx}
                 className="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-slate-200 shadow-2xs text-slate-800 flex items-center gap-1.5"
               >
-                <span className="text-teal-700 font-black">{langItem.label}</span>
-                <span className="text-[10px] text-slate-400 font-medium">({langItem.sub})</span>
+                <span className="text-teal-700 font-black" dir={langItem.dir}>{langItem.label}</span>
+                {langItem.sub && langItem.sub !== langItem.label ? (
+                  <span className="text-[10px] text-slate-400 font-medium">({langItem.sub})</span>
+                ) : null}
               </span>
             ))}
           </div>
@@ -1938,12 +1940,31 @@ export function RegisterPortal() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-200/90 bg-white/80 backdrop-blur-md py-6 mt-12 sm:mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-900">TYPOMATIC</span>
+      <footer className="relative z-10 border-t border-slate-200/90 bg-white/90 backdrop-blur-md py-6 sm:py-8 mt-12 sm:mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3.5 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <span className="font-bold text-slate-900 tracking-wide">TYPOMATIC</span>
             <span>&bull;</span>
-            <span className="font-medium">HM Innovations</span>
+            <span className="font-semibold text-slate-700">Product of</span>
+            <a
+              href="https://attanjil.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-teal-700 hover:text-teal-900 hover:underline transition inline-flex items-center gap-0.5"
+            >
+              <span>AtTanjil.com</span>
+              <ExternalLink className="w-3 h-3 text-teal-600" />
+            </a>
+            <span>&bull;</span>
+            <a
+              href="https://works.attanjil.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-600 hover:text-teal-700 hover:underline transition inline-flex items-center gap-0.5"
+            >
+              <span>works.attanjil.com</span>
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </a>
             <span>&bull;</span>
             <span>&copy; {new Date().getFullYear()} All Rights Reserved.</span>
           </div>
