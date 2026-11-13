@@ -40,6 +40,20 @@ type WindowsVersion = 'win11' | 'win10' | 'win7' | '';
 type WifiStatus = 'yes' | 'no' | '';
 
 const DEMO_BKASH_NUMBER = (import.meta as any).env?.VITE_BKASH_NUMBER || '01700-000000';
+const SUPPORT_PHONE_NUMBER = '8801636790890';
+const SUPPORT_PHONE_DISPLAY = '+880 1636-790890';
+
+export const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </svg>
+);
+
+export const TelegramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0Zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.458c.535-.194 1.006.128.832.94Z" />
+  </svg>
+);
 
 function getPublicApiUrl(): string {
   const envUrl = (import.meta as any).env?.VITE_CONTROL_API_ORIGIN;
@@ -56,7 +70,7 @@ function getWhatsAppSupportLink(): string {
   const envWa = (import.meta as any).env?.VITE_WHATSAPP_SUPPORT_NUMBER;
   const rawNumber = (envWa && typeof envWa === 'string' && envWa.trim())
     ? envWa.trim().replace(/[^0-9]/g, '')
-    : (DEMO_BKASH_NUMBER ? DEMO_BKASH_NUMBER.replace(/[^0-9]/g, '') : '8801700000000');
+    : SUPPORT_PHONE_NUMBER;
 
   const targetNumber = rawNumber.startsWith('880')
     ? rawNumber
@@ -65,10 +79,19 @@ function getWhatsAppSupportLink(): string {
     : rawNumber;
 
   const defaultMsg = encodeURIComponent(
-    'আসসালামু আলাইকুম, টাইপোম্যাটিক (Typomatic) সফটওয়্যার সাবস্ক্রিপশন ও বিকাশ পেমেন্ট সংক্রান্ত বিষয়ে বিস্তারিত জানতে চাচ্ছি।'
+    'আসসালামু আলাইকুম, টাইপোম্যাটিক (Typomatic) সফটওয়্যার সাবস্ক্রিপশন ও অফিশিয়াল লাইসেন্স সংক্রান্ত বিষয়ে বিস্তারিত জানতে চাচ্ছি।'
   );
 
   return `https://wa.me/${targetNumber}?text=${defaultMsg}`;
+}
+
+function getTelegramSupportLink(): string {
+  const envTg = (import.meta as any).env?.VITE_TELEGRAM_SUPPORT_HANDLE;
+  if (envTg && typeof envTg === 'string' && envTg.trim()) {
+    const handle = envTg.trim().replace(/^@/, '');
+    return `https://t.me/${handle}`;
+  }
+  return `https://t.me/+${SUPPORT_PHONE_NUMBER}`;
 }
 
 interface BrandMorphEyebrowProps {
@@ -768,14 +791,45 @@ export function RegisterPortal() {
           </div>
 
           {/* Right Action Bar */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Direct Helpline Badge on larger screens */}
+            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs font-mono font-bold text-slate-700 shadow-2xs">
+              <Phone className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+              <span>{SUPPORT_PHONE_DISPLAY}</span>
+            </div>
+
+            {/* Eyecatching WhatsApp Contact Button */}
+            <a
+              href={getWhatsAppSupportLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-xs hover:shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer ring-2 ring-emerald-500/20"
+              title={lang === 'bn' ? 'হোয়াটসঅ্যাপে সরাসরি যোগাযোগ করুন (+880 1636-790890)' : 'Chat on WhatsApp (+880 1636-790890)'}
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-current shrink-0 drop-shadow-2xs" />
+              <span className="hidden sm:inline font-bold">WhatsApp</span>
+            </a>
+
+            {/* Eyecatching Telegram Contact Button */}
+            <a
+              href={getTelegramSupportLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#229ED9] hover:bg-[#1e8ec3] text-white text-xs font-bold shadow-xs hover:shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer ring-2 ring-sky-500/20"
+              title={lang === 'bn' ? 'টেলিগ্রামে সরাসরি যোগাযোগ করুন (+880 1636-790890)' : 'Chat on Telegram (+880 1636-790890)'}
+            >
+              <TelegramIcon className="w-4 h-4 fill-current shrink-0 drop-shadow-2xs" />
+              <span className="hidden sm:inline font-bold">Telegram</span>
+            </a>
+
+            {/* Language Switcher */}
             <button
               type="button"
               onClick={() => setLang((prev) => (prev === 'bn' ? 'en' : 'bn'))}
-              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-xs font-bold text-slate-700 shadow-xs transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-xs font-bold text-slate-700 shadow-xs transition cursor-pointer"
               title="Change Language"
             >
-              <Globe className="w-3.5 h-3.5 text-teal-600" />
+              <Globe className="w-3.5 h-3.5 text-teal-600 shrink-0" />
               <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
             </button>
           </div>
@@ -1706,26 +1760,40 @@ export function RegisterPortal() {
                       </div>
                     </div>
 
-                    {/* Direct WhatsApp Helpline Ribbon inside bKash box */}
+                    {/* Direct WhatsApp & Telegram Helpline Ribbon inside bKash box */}
                     <div className="mt-4 pt-3.5 border-t border-rose-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/80 -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 p-3.5 sm:px-5 rounded-b-2xl">
                       <div className="flex items-center gap-2 text-rose-950 text-xs">
-                        <MessageSquare className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <WhatsAppIcon className="w-4 h-4 text-emerald-600 shrink-0" />
                         <span className="font-semibold">
                           {lang === 'bn'
-                            ? 'পেমেন্ট বা প্যাকেজ নিয়ে কোনো প্রশ্ন আছে? সরাসরি কথা বলুন:'
-                            : 'Have questions regarding bKash payment or package?'}
+                            ? 'পেমেন্ট বা প্যাকেজ নিয়ে কোনো প্রশ্ন আছে? সরাসরি যোগাযোগ করুন:'
+                            : 'Have questions regarding bKash payment or package? Direct contact:'}
                         </span>
                       </div>
-                      <a
-                        href={getWhatsAppSupportLink()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs hover:shadow-md cursor-pointer shrink-0"
-                      >
-                        <MessageSquare className="w-3.5 h-3.5" />
-                        <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপ হেল্পলাইন' : 'WhatsApp Helpline'}</span>
-                        <ExternalLink className="w-3 h-3 opacity-80" />
-                      </a>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={getWhatsAppSupportLink()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition shadow-xs hover:shadow-md active:scale-95 cursor-pointer ring-1 ring-emerald-500/20"
+                          title="WhatsApp Helpline"
+                        >
+                          <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                          <span>WhatsApp</span>
+                          <ExternalLink className="w-3 h-3 opacity-80" />
+                        </a>
+                        <a
+                          href={getTelegramSupportLink()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#229ED9] hover:bg-[#1e8ec3] text-white text-xs font-bold transition shadow-xs hover:shadow-md active:scale-95 cursor-pointer ring-1 ring-sky-500/20"
+                          title="Telegram Helpline"
+                        >
+                          <TelegramIcon className="w-3.5 h-3.5 fill-current" />
+                          <span>Telegram</span>
+                          <ExternalLink className="w-3 h-3 opacity-80" />
+                        </a>
+                      </div>
                     </div>
                   </div>
 
@@ -1969,21 +2037,37 @@ export function RegisterPortal() {
             <span>&copy; {new Date().getFullYear()} All Rights Reserved.</span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-slate-500">
-            <span className="flex items-center gap-1.5 text-teal-700 font-medium">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 sm:gap-3 text-slate-500">
+            <span className="flex items-center gap-1.5 text-teal-700 font-medium mr-1">
               <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
               <span>{lang === 'bn' ? 'নিরাপদ তথ্য এনক্রিপশন' : 'Encrypted & Hardware Bound'}</span>
             </span>
             <span className="hidden sm:inline">&bull;</span>
+
+            {/* WhatsApp Link in Footer */}
             <a
               href={getWhatsAppSupportLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-emerald-700 text-emerald-800 transition flex items-center gap-1 font-semibold"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200/90 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all font-bold text-xs shadow-2xs group"
+              title={lang === 'bn' ? 'হোয়াটসঅ্যাপ: +880 1636-790890' : 'WhatsApp: +880 1636-790890'}
             >
-              <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-              <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপ হেল্পলাইন' : 'WhatsApp Support'}</span>
+              <WhatsAppIcon className="w-3.5 h-3.5 fill-current text-emerald-600 group-hover:text-white transition" />
+              <span>WhatsApp: {SUPPORT_PHONE_DISPLAY}</span>
             </a>
+
+            {/* Telegram Link in Footer */}
+            <a
+              href={getTelegramSupportLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 text-sky-800 border border-sky-200/90 hover:bg-[#229ED9] hover:text-white hover:border-[#229ED9] transition-all font-bold text-xs shadow-2xs group"
+              title={lang === 'bn' ? 'টেলিগ্রাম: +880 1636-790890' : 'Telegram: +880 1636-790890'}
+            >
+              <TelegramIcon className="w-3.5 h-3.5 fill-current text-sky-600 group-hover:text-white transition" />
+              <span>Telegram: {SUPPORT_PHONE_DISPLAY}</span>
+            </a>
+
             <span className="hidden sm:inline">&bull;</span>
             <a
               href="mailto:support@attanjil.com"
